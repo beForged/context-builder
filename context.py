@@ -1,26 +1,38 @@
-#want to build a base context view 
 import xml.etree.ElementTree as ET
 import sys
-from lxml import etree
 
-tree = ET.parse('base-context.xml')
-root = tree.getroot()
-#time_dict = {'start':'2010','end':'2014'}#these can be made from 
-#sample_dict = {'purpose':"agagagag",'abcd':"asfdasf"}
-#do the time things
-#root[0].find('start_date_time').text = time_dict['start']
-#root[0].find('stop_date_time').text = time_dict['end']
 
-#primary results summary
-#primary_res = root[1]#this object is a subelement
-#given some dict/hash of name->text
-#for elem in sample_dict.keys():
-#    if primary_res.find(elem) is None:
-#        ET.SubElement(primary_res,elem)
-#    primary_res.find(elem).text = sample_dict[elem]
-#    print(sample_dict[elem])
+if __name__ == "__main__":
+    time_dict = {}
 
-#tree.write(sys.stdout, "unicode")
+    num_ex = input("how many xml files:")
+
+    start_t = input("list at least" + num_ex + " start times(space delimited):")
+    #creates an array of entries that are space delimited
+    starts = start_t.split(" ")
+    end_t = input("list at least " + num_ex + " stop times(space delimited):")
+    stops = ent_t.split(" ")
+    names = input("list some names: ").split(" ")
+    proc = input("list some processing levels:").split(" ")
+    perps = input("list some purposes:").split(" ")
+    types = input("list some types:").split(" ")
+    filesname = input("input a file name")
+    for each in num_ex:
+        time_dict = {'start_date_time':random.choice(starts),'stop_date_time':random.choice(stops)}
+        prime_dict = {'purpose':random.choice(perps),
+                'processing_level':quicker(proc)}
+        investig_dict = {'name':quicker(names),'type':quicker(types), 'lid_reference':'ab-34-cf-16', 
+                'reference_type':'collectiones'}
+        #open a for loop and request how many of these they want, or we can randomly gen a certain num
+        obs_dict = [{'name':quicker(names),'type':quicker(types)}]
+        targ_dict = [{'name':quicker(names),'type':quicker(types)},
+                {'name':'achilles','type':'asteroid','type':'smol planet'}]
+        create_context_area(time_dict, prime_dict, investig_dict, obs_dict, targ_dict, name + each)
+
+def quicker(abc):
+    return random.choice(abc)
+
+
 
 #https://norwied.wordpress.com/2013/08/27/307/
 def indent(elem, level=0):
@@ -45,7 +57,7 @@ def test():
     investig_dict = {'name':'abc','type':'type is thing', 'lid_reference':'ab-34-cf-16', 
             'reference_type':'collectiones', 'additional_obj': 'hopefully this works'}
     obs_dict = [{'name':'gondola','type':'balloon'},{'name':'enterprise','type':'spooceship'}]
-    targ_dict = [{'name':'spooceship','type':'comet'},{'name':'achilles','type':'asteroid'}]
+    targ_dict = [{'name':'spooceship','type':'comet'},{'name':'achilles','type':'asteroid','type':'smol planet'}]
     name = "abc.xml"
     create_context_area(time_dict, prime_dict, investig_dict, obs_dict, targ_dict, name)
 
@@ -125,9 +137,9 @@ def create_context_area(time_dict, prime_dict, investig_dict, obs_dict, targ_dic
             o.find(elem).text = dictionary[elem]
     #need to do the same thing for target id
     for dictionary in targ_dict:
-        t = ET.SubElement(root, targ_id.tag)
+        t = ET.SubElement(root, 'Target_Identification')
         for elem in dictionary.keys():
-            if t.find(elem) is None:
+            if t.find(elem) is None :
                 ET.SubElement(t, elem)
             t.find(elem).text = dictionary[elem]
 #    tree.write(name) #this is unformatted
@@ -136,4 +148,3 @@ def create_context_area(time_dict, prime_dict, investig_dict, obs_dict, targ_dic
     tree.write(name)
 
 
-test()
