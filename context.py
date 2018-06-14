@@ -1,6 +1,7 @@
 #want to build a base context view 
 import xml.etree.ElementTree as ET
 import sys
+from lxml import etree
 
 tree = ET.parse('base-context.xml')
 root = tree.getroot()
@@ -21,12 +22,28 @@ root = tree.getroot()
 
 #tree.write(sys.stdout, "unicode")
 
+#https://norwied.wordpress.com/2013/08/27/307/
+def indent(elem, level=0):
+  i = "\n" + level*"  "
+  if len(elem):
+    if not elem.text or not elem.text.strip():
+      elem.text = i + "  "
+    if not elem.tail or not elem.tail.strip():
+      elem.tail = i
+    for elem in elem:
+      indent(elem, level+1)
+    if not elem.tail or not elem.tail.strip():
+      elem.tail = i
+  else:
+    if level and (not elem.tail or not elem.tail.strip()):
+      elem.tail = i
+
 #test out the create function 
 def test():
     time_dict = {'start_date_time':'2014','stop_date_time':'2015'}
     prime_dict = {'purpose':'science','processing_level':'somewhat', 'test':'does this work?'}
     investig_dict = {'name':'abc','type':'type is thing', 'lid_reference':'ab-34-cf-16', 
-            'reference_type':'collectiones', 'additional obj': 'hopefully this works'}
+            'reference_type':'collectiones', 'additional_obj': 'hopefully this works'}
     obs_dict = [{'name':'gondola','type':'balloon'},{'name':'enterprise','type':'spooceship'}]
     targ_dict = [{'name':'spooceship','type':'comet'},{'name':'achilles','type':'asteroid'}]
     name = "abc.xml"
@@ -53,8 +70,8 @@ def create_context_area(time_dict, prime_dict, investig_dict, obs_dict, targ_dic
     obs = obs_sys[0]
     targ_id = root[4 ]#expansion
     #we remove observing system and target identification
-    root[3].remove
-    root[4].remove
+    obs_sys.remove(obs)
+    root.remove(targ_id)
     #set out subelements to start out with, we can add more of some of them later
     #could have an array of dicts. and order by number/index
 
@@ -84,10 +101,12 @@ def create_context_area(time_dict, prime_dict, investig_dict, obs_dict, targ_dic
         #to automate that
         if elem == 'lid_reference' or elem == 'reference_type':
             #should probably be another is None if statement here
-            ET.SubElement(int_ref, elem)
+            if int_ref.find(elem) is None:
+                ET.SubElement(int_ref, elem)
             int_ref.find(elem).text = investig_dict[elem]
-        elif invest_area.find(elem) is None:
-            ET.SubElement(invest_area,elem)
+        else:
+            if invest_area.find(elem) is None:
+                ET.SubElement(invest_area,elem)
             invest_area.find(elem).text = investig_dict[elem]
 
 
@@ -98,8 +117,7 @@ def create_context_area(time_dict, prime_dict, investig_dict, obs_dict, targ_dic
         #because this is a 2 deep thing, where we make a new observing system and there is 
         #another inner element that name and type go uinder, may need to make this one longer 
         #if there are tags outside of the inner one, observing system component
-        t = ET.SubElement(root, obs_sys)
-        o = ET.SubElement(obs_sys, obs)
+        o = ET.SubElement(obs_sys, obs.tag)
         #we pick out the dict and create a subelement in root, with as ab 
         for elem in dictionary.keys():
             if o.find(elem) is None:
@@ -107,12 +125,15 @@ def create_context_area(time_dict, prime_dict, investig_dict, obs_dict, targ_dic
             o.find(elem).text = dictionary[elem]
     #need to do the same thing for target id
     for dictionary in targ_dict:
-        t = ET.SubElement(root, targ_id)
+        t = ET.SubElement(root, targ_id.tag)
         for elem in dictionary.keys():
             if t.find(elem) is None:
                 ET.SubElement(t, elem)
             t.find(elem).text = dictionary[elem]
-    tree.write("something.xml")
+#    tree.write(name) #this is unformatted
+    indent(root)
+    tree = ET.ElementTree(root)
+    tree.write(name)
 
 
 test()
