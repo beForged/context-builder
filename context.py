@@ -1,8 +1,11 @@
 import xml.etree.ElementTree as ET
 import sys
 
+     
 
-if __name__ == "__main__":
+
+
+def cmdlinein():
     time_dict = {}
 
     num_ex = input("how many xml files:")
@@ -29,6 +32,7 @@ if __name__ == "__main__":
                 {'name':'achilles','type':'asteroid','type':'smol planet'}]
         create_context_area(time_dict, prime_dict, investig_dict, obs_dict, targ_dict, name + each)
 
+#should pick one element out of a list
 def quicker(abc):
     return random.choice(abc)
 
