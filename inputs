@@ -1,0 +1,9 @@
+time 3014-09-24T09:40:34Z
+purpose Science
+processing_level Partially Processed
+name Ballon Observation Platform for Planetary Science 
+type Mission
+lid_reference urn:nasa:pds:context:investigation:mission.bopps
+reference_types collection_to_investigate
+Observing_System_Components name BOPPS Gondola type Balloon
+Target_Identification name C/2014 E2 (Jacques) type Comet
