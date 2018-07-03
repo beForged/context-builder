@@ -2,11 +2,12 @@ import re
 #might need to be import regex as re oops
 def parse_file(filename):
     with open(filename, 'r') as fp:
-        return  fp.readlines
+        return fp.readlines()
 
 def process(arr_line):
 
     for line in arr_line:
+        line.rstrip()
         m = re.match('^purpose (.*)', line)
         if m:
             purpose = m.group(0)
@@ -41,9 +42,10 @@ def process(arr_line):
         if m:
             targ_name = m.group(0)
             targ_type = m.group(0)
+    print(dir())
 
-
-
+process(parse_file("./inputs"))
+#print(parse_file("./inputs"))
 
 
 #time coord, prim results summ, invest area, observing system, targ id
