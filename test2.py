@@ -2,7 +2,7 @@ import re
 #might need to be import regex as re oops
 def parse_file(filename):
     with open(filename, 'r') as fp:
-        return lines = fp.readlines
+        return  fp.readlines
 
 def process(arr_line):
     
@@ -25,12 +25,14 @@ def process(arr_line):
             #object?
         else if m = re.match ('^Target_Identification name (.*) type (.*)', line):
             #multiple
+            targ_name = m.group(0)
+            targ_type = m.group(0)
             
 
 
 
 
 #time coord, prim results summ, invest area, observing system, targ id
-top_level = []
-root = ele("", None, 'root', arr)
+#top_level = []
+#root = ele("", None, 'root', arr)
 
