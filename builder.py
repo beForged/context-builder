@@ -63,6 +63,11 @@ def time():
     #missing time HH:MM:SSSS
     date = str(year) + "-" + str(month + "-" + str(day) + "Z"
     return date
+    
+def timemath():
+    import time
+
+return 
 
 def primary_results(facets):
     purposes = ['Calibration', 'Checkout', 'Engineering', 'Navigation', 'Observation Geometry', 'Science']
