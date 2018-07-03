@@ -8,7 +8,7 @@ def process(arr_line):
 
     for line in arr_line:
         line.rstrip()
-        m = re.match('^purpose (.*)', line)
+        m = re.match('^(?:purpose) (.*)', line)
         if m:
             purpose = m.group(0)
         m = re.match('^processing_level (.*)', line)
@@ -42,7 +42,7 @@ def process(arr_line):
         if m:
             targ_name = m.group(0)
             targ_type = m.group(0)
-    print(dir())
+    print(locals())
 
 process(parse_file("./inputs"))
 #print(parse_file("./inputs"))
