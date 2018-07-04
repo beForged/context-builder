@@ -1,14 +1,19 @@
 import re
+import builder
 #might need to be import regex as re oops
 def parse_file(filename):
     with open(filename, 'r') as fp:
         return fp.readlines()
 
 def process(arr_line):
+    targ_name = []
+    targ_type = []
+    obs_name = []
+    obs_type = []
 
     for line in arr_line:
         line.rstrip()
-        p = re.compile('^(?:purpose) (.*)')
+        #remember group 0 is entire matched group 1 is first group
         m = re.match('^(?:purpose) (.*)', line)
         if m:
             purpose = m.group(1)
@@ -34,16 +39,16 @@ def process(arr_line):
 
         m = re.match('^observing_system_components name (.*) type (.*)', line)
         if m:
-            obs_name = m.group(1)
-            obs_type = m.group(2)
+            obs_name.append(m.group(1))
+            obs_type.append(m.group(2))
             #object?
 
         m = re.match ('^Target_Identification name (.*) type (.*)', line)
             #multiple
         if m:
-            targ_name = m.group(1)
-            targ_type = m.group(2)
-    print(locals())
+            targ_name.append(m.group(1))
+            targ_type.append(m.group(2))
+        print(targ_name)
 
 process(parse_file("./inputs"))
 #print(parse_file("./inputs"))

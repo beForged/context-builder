@@ -27,7 +27,7 @@ def indent(elem, level=0):
       elem.tail = i
   else:
     if level and (not elem.tail or not elem.tail.strip()):
-
+        elem.tail = i
 
 #list of elems
 def context_builder(elems):
@@ -61,13 +61,10 @@ def time():
     month = random.randint(1,12)
     day = random.randint(1,30)
     #missing time HH:MM:SSSS
-    date = str(year) + "-" + str(month + "-" + str(day) + "Z"
+    date = str(year) + "-" + str(month) + "-" + str(day) + "Z"
     return date
     
-def timemath():
-    import time
 
-return 
 
 def primary_results(facets):
     purposes = ['Calibration', 'Checkout', 'Engineering', 'Navigation', 'Observation Geometry', 'Science']
@@ -83,7 +80,7 @@ def primary_results(facets):
     #adding facets
     if facets is not None:
         #can add filtering, so for example not all have a domain or whatever
-        wavelengths = ['Far Infrared', 'Gamma Ray', 'Infrared', 'Microwave', 'Millimeter', 'Near Infrared', 'Radio'. 'Submillimeter', 'Ultraviolet', 'Visible', 'X-ray']
+        wavelengths = ['Far Infrared', 'Gamma Ray', 'Infrared', 'Microwave', 'Millimeter', 'Near Infrared', 'Radio', 'Submillimeter', 'Ultraviolet', 'Visible', 'X-ray']
         domains = ['Atmosphere','Heliosphere', 'Interior', 'Interstellar', 'Ionosphere', 'Magnetosphere', 'Surface']
         discipline_name = ['Atmospheres', 'Fields', 'Flux Measurements', 'Imaging', 'Particles', 'Ring-Moon Systems', 'Small Bodies', 'Spectroscopy']
     prim = ele(None, 'Context_Area', PrimRes , subs)
