@@ -8,40 +8,41 @@ def process(arr_line):
 
     for line in arr_line:
         line.rstrip()
+        p = re.compile('^(?:purpose) (.*)')
         m = re.match('^(?:purpose) (.*)', line)
         if m:
-            purpose = m.group(0)
+            purpose = m.group(1)
         m = re.match('^processing_level (.*)', line)
         if m:
-            processing_level = m.group(0)
+            processing_level = m.group(1)
 
         m = re.match('^name (.*)', line)
         if m:
-            name = m.group(0)
+            name = m.group(1)
 
         m = re.match('^type (.*)', line)
         if m:
-            typ = m.group(0)
+            typ = m.group(1)
 
         m = re.match ('^lid_reference (.*)', line)
         if m:
-            lid_ref = m.group(0)
+            lid_ref = m.group(1)
 
         m = re.match('^reference_types (.*)', line)
         if m:
-            ref_type = m.group(0)
+            ref_type = m.group(1)
 
         m = re.match('^observing_system_components name (.*) type (.*)', line)
         if m:
-            obs_name = m.group(0)
-            obs_type = m.group(1)
+            obs_name = m.group(1)
+            obs_type = m.group(2)
             #object?
 
         m = re.match ('^Target_Identification name (.*) type (.*)', line)
             #multiple
         if m:
-            targ_name = m.group(0)
-            targ_type = m.group(0)
+            targ_name = m.group(1)
+            targ_type = m.group(2)
     print(locals())
 
 process(parse_file("./inputs"))
