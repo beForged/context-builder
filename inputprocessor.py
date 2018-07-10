@@ -56,16 +56,21 @@ def process(arr_line):
 #print(process(parse_file("./inputs")))
 #print(parse_file("./inputs"))
 
-def testinput(filename):
+def testinput(arr):
     #want to take our input file and conver it useing builder.py into an xml file
-    a = process(parse_file(filename))
-    res = context_builder(a)
-    indent(res)
-    tree = ET.ElementTree(res)
-    tree.write(sys.stdout, "unicode")
+    counter = 0
+    for filename in arr:
+        counter = counter + 1
+        a = process(parse_file(filename))
+        res = context_builder(a)
+        indent(res)
+        tree = ET.ElementTree(res)
+        output = "output" + str(counter) + ".xml"
+        tree.write(output)
 
 def getinput():
-    var = input("enter the filename:")
-    testinput(var)
+    var = input("enter the filenames, comma separated:")
+    arr = [x.strip() for x in var.split(',')]
+    testinput(arr)
 
 getinput()
