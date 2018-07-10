@@ -3,15 +3,25 @@ import random
 import sys
 
     #a class that contains a parent, a tag, and text id 
-class ele:
-    def __init__(self, text, parent, tag, ele):
+class Ele:
+    text = "default"
+    tag = "no tag yet"
+    ele = None
+    def __init__(self, text, tag, elem):
        self.text = text 
-       self.parent = parent # if we make this a list..
+       #self.parent = parent # if we make this a list..
        self.tag = tag
-       if ele is None:
+       if elem is None:
            self.ele = None
        else:
+            self.ele = elem
+       
+       def set_ele(ele):
             self.ele = ele
+
+def make_ele(text, tag, ele):
+    ele = Ele(text, tag, ele)
+    return ele
 
 #https://norwied.wordpress.com/2013/08/27/307/
 def indent(elem, level=0):
@@ -34,10 +44,11 @@ def context_builder(elems):
     root = ET.Element('Context_area')
     for elem in elems:
         helper(root, elem) 
+    return root
 
 def helper(root, element):
     sub = ET.SubElement(root, element.tag)
-    if element.test is not None:
+    if element.text is not None:
         sub.text = element.text
     if element.ele is not None:
         for subele in element.ele:
