@@ -1,17 +1,17 @@
 import re
 from builder import *
-#might need to be import regex as re oops
+
+#this opens the file and makes it into an array of lines that gets returned
 def parse_file(filename):
     with open(filename, 'r') as fp:
         return fp.readlines()
 
 def process(arr_line):
+    #this is what we return in the end, it is a list of elems as defined in the builder class
     elems = []
-    targ_name = []
-    targ_type = []
-    obs_name = []
-    obs_type = []
 
+#for each line in the file, we match it to a specific regex, and then insert it into the elems
+#list, as elem objects, so that they can be easily turned into xml files, 
     for line in arr_line:
         line.rstrip()
         #remember group 0 is entire matched group 1 is first group
@@ -60,6 +60,8 @@ def testinput(arr):
     #want to take our input file and conver it useing builder.py into an xml file
     counter = 0
     for filename in arr:
+        #this counts,for each file in the array, it processes it, creates an file name, and
+        #outputs them as "output#.xml" where # is a number.
         counter = counter + 1
         a = process(parse_file(filename))
         res = context_builder(a)
@@ -70,6 +72,7 @@ def testinput(arr):
 
 def getinput():
     var = input("enter the filenames, comma separated:")
+    #takes the string of filenames, strips the whitespace and splits by comma
     arr = [x.strip() for x in var.split(',')]
     testinput(arr)
 
