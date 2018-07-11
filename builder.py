@@ -4,25 +4,33 @@ import sys
 
     #a class that contains a parent, a tag, and text id 
 class Ele:
+    #these defaults are probably not needed other than ele
     text = "default"
     tag = "no tag yet"
     ele = None
+    #defined/initalized with a text, and a tag and none for child elements
     def __init__(self, text, tag, elem):
        self.text = text 
-       #self.parent = parent # if we make this a list..
        self.tag = tag
+       #child elements defined, can be a list of childs
        if elem is None:
            self.ele = None
        else:
             self.ele = elem
        
+       #set the child elements, this rewrites, may want to add an append element
+       #function
        def set_ele(ele):
             self.ele = ele
 
+#helper to make elements, can call this func
+#instead of doing whatever strange constructer python has
+#clarity sake
 def make_ele(text, tag, ele):
     ele = Ele(text, tag, ele)
     return ele
 
+#indents xml objects, cant be given tree, give it the root element object
 #https://norwied.wordpress.com/2013/08/27/307/
 def indent(elem, level=0):
   i = "\n" + level*"  "
@@ -40,6 +48,7 @@ def indent(elem, level=0):
         elem.tail = i
 
 #list of elems
+#recursivly generates sml based on a list of elems defined above
 def context_builder(elems):
     root = ET.Element('Context_area')
     for elem in elems:
@@ -66,7 +75,7 @@ def time_element():
     time = ele(None, 'Context_area', 'Time_Coordinates', times)
     return time
 
-
+#attempt to define a random time generator
 def time():
     year = random.randint(1900, 2030)
     month = random.randint(1,12)
@@ -76,7 +85,7 @@ def time():
     return date
     
 
-
+#this is probably a useless function, but the list of items are left here for future reference
 def primary_results(facets):
     purposes = ['Calibration', 'Checkout', 'Engineering', 'Navigation', 'Observation Geometry', 'Science']
     processing_level = ['Calibrated', 'Derived', 'Partially Processed', 
