@@ -17,5 +17,13 @@ def fileinp():
         arr.append(parse_file(filename))
 
     #arr is a list of a list of file line
-    for f in arr:
+    
 
+def namelater(arr):
+    for line in arr:
+        #we take a line in and 
+       line = line.strip()
+       m = re.match('name (.*)' , line) 
+       if m:
+            a = m.group(1)
+            name = [x.strip() for x in a.split(' ')]
