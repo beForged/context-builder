@@ -9,28 +9,73 @@ def parse_file(filename):
 def process(arr_line):
     #this is what we return in the end, it is a list of elems as defined in the builder class
     elems = []
+    primary_res = []
 
 #for each line in the file, we match it to a specific regex, and then insert it into the elems
 #list, as elem objects, so that they can be easily turned into xml files, 
     for line in arr_line:
         line.rstrip()
+        
+
+#########################
+#time math
+
+#still have to implement time math
+
         #remember group 0 is entire matched group 1 is first group
+        m = re.match ('^time (.*)',line)
+        if m: 
+            time = [(make_ele(m.group(1), "start_date_time", None)),make_ele(m.group(1), "stop_date_time", None)]
+            elems.append(make_ele("","Time_Coordinates", time))
+
+################################################
+#Primary Results Summary
+
         m = re.match('^(?:purpose) (.*)', line)
         if m:
-            elems.append(make_ele(m.group(1), "Purpose", None))
+            perp = make_ele(m.group(1), "Purpose", None)
+            elems.append(make_ele("", "Primary_Result_Summary", perp))
 
         m = re.match('^processing_level (.*)', line)
         if m:
-            elems.append(make_ele(m.group(1), "Processing_level", None))
+            for ele in elems:
+                if ele.tag == "Primary_Result_Summary":
+                    sub = [ele.ele,make_ele(m.group(1), "processing_level", None)]
+                    ele.set_ele(sub)
+        m = re.match('science_facets (.*)', line)#facets will just be in a big line I guess
+        if m: 
+            fac = []
+            lst = m.group(1)
+            lst = [x.strip() for x in lst.split(',')]#should be in form tag text, ...
+            for each in lst:
+                #print(each)
+                r = re.match('([^\s]*) (.*)', each)
+                #print(r)
+                fac.append(make_ele(r.group(2), r.group(1), None))
+            for ele in elems:
+                if ele.tag == "Primary_Result_Summary":
+                    sub = ele.ele
+                    sub.append(make_ele("", "Science_Facets", fac))
+                    ele.set_ele(sub)
 
+
+
+
+
+###########################################
+#Investigation Area
+
+
+        invest = []
         m = re.match('^name (.*)', line)
         if m:
-            elems.append(make_ele(m.group(1), "Name", None))
+            invest.append(make_ele(m.group(1), "Name", None))
 
         m = re.match('^type (.*)', line)
         if m:
-            elems.append(make_ele(m.group(1), "Type", None))
+            invest.append(make_ele(m.group(1), "Type", None))
 
+        refs = []
         m = re.match ('^lid_reference (.*)', line)
         if m:
             elems.append(make_ele(m.group(1), "Lid_Reference", None))
@@ -38,6 +83,12 @@ def process(arr_line):
         m = re.match('^reference_types (.*)', line)
         if m:
             elems.append(make_ele(m.group(1), "Reference_Types", None))
+
+
+#############################
+#this is observing system components and target id which are fairly mature at this time
+#only need a little bit of work to more or less fully flesh them out.
+
 
         m = re.match('^observing_system_components name (.*) type (.*)', line)
         if m:

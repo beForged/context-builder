@@ -27,3 +27,13 @@ def namelater(arr):
        if m:
             a = m.group(1)
             name = [x.strip() for x in a.split(' ')]
+        m = re.match('type (.*)', line)
+        if m:
+            a = m.group(1)
+            types = [x.strip() for x in a.split(' ')]
+        m = re.match('time (.*)', line)
+        if m:
+            a = m.group(1)
+            types = [x.strip() for x in a.split(' ')]
+
+
