@@ -4,6 +4,7 @@
 #should also have functionality to directly make xml files
 
 from inputprocessor import *
+from builder import time
 
 def cmdline():
     names = input("give a comma separated list of names: ")
@@ -15,7 +16,7 @@ def fileinp():
     names = [x.strip() for x in filename.split(',')]
     for f in names:
         arr.append(parse_file(filename))
-
+    return arr
     #arr is a list of a list of file line
     
 
@@ -36,4 +37,16 @@ def namelater(arr):
             a = m.group(1)
             types = [x.strip() for x in a.split(' ')]
 
+def defaultgeneration(num): #number of files you want to generate
+    for x in range(0, num):
+        filename = "generated-input" + str(x)
+        filewriter(filename, x)
+
+def filewriter(filename, num):
+    f = open(filename, "w+")
+    f.write("time " + time())
+    f.write("purpose Science")
+    f.write("processing_level Partially Processed")
+    f.write
+    f.close()
 
