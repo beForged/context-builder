@@ -12,7 +12,7 @@ def getele(elems, string):
             if ele.tag == string:
                 return ele
     else:
-        return elems
+        return elems.ele
 
 def process(arr_line):
     #this is what we return in the end, it is a list of elems as defined in the builder class
@@ -24,6 +24,9 @@ def process(arr_line):
     for line in arr_line:
         line.rstrip()
         
+        m = re.match ('^#.*', line)
+        if m:
+            pass
 
 #########################
 #time math
@@ -98,18 +101,16 @@ def process(arr_line):
 
         m = re.match('^reference_types (.*)', line)
         if m:
-            element = getele(elems, "Investigation_Area")
-            intref = getele(element, "Internal_Reference")
-            print(intref.ele)
+            investigation = getele(elems, "Investigation_Area")
+            intref = getele(investigation.ele, "Internal_Reference")
             intref.ele.append(make_ele(m.group(1), "Reference_Types", None))
-            print(intref.ele)
 
 #############################
 #this is observing system components and target id which are fairly mature at this time
 #only need a little bit of work to more or less fully flesh them out.
 
 
-        m = re.match('^observing_system_components name (.*) type (.*)', line)
+        m = re.match('^Observing_System_Components name (.*) type (.*)', line)
         if m:
             obs_sys_comp =[(make_ele(m.group(1), "Name", None)), make_ele(m.group(2), "Type", None)]
             elems.append(make_ele("", "Observing_System_Componenets", obs_sys_comp))
