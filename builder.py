@@ -33,10 +33,10 @@ def make_ele(text, tag, ele):
 #indents xml objects, cant be given tree, give it the root element object
 #https://norwied.wordpress.com/2013/08/27/307/
 def indent(elem, level=0):
-  i = "\n" + level*"  "
+  i = "\n" + level*"   "
   if len(elem):
     if not elem.text or not elem.text.strip():
-      elem.text = i + "  "
+      elem.text = i + "   "
     if not elem.tail or not elem.tail.strip():
       elem.tail = i
     for elem in elem:

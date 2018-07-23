@@ -5,7 +5,7 @@ science_facets wavelength_range Infrared, dicipline_name Imaging, facet1 Greysca
 name BOPPS
 type mission
 lid_reference urn:nasa:pds:context:investigation:mission.bopps
-reference_type collection_to_investigation
+reference_types collection_to_investigation
 Observing_System_Components name BOPPS Gondola type Balloon reference_type is_airborne
 Observing_System_Components name BOPPS Telescope type Telescope reference_type is_telescope
 Observing_System_Components name BOPPS Infra-Red Camera type Instrument reference_type is_instrument

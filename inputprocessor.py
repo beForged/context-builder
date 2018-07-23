@@ -6,6 +6,14 @@ def parse_file(filename):
     with open(filename, 'r') as fp:
         return fp.readlines()
 
+def getele(elems, string):
+    if type(elems) is list:
+        for ele in elems:
+            if ele.tag == string:
+                return ele
+    else:
+        return elems
+
 def process(arr_line):
     #this is what we return in the end, it is a list of elems as defined in the builder class
     elems = []
@@ -69,21 +77,32 @@ def process(arr_line):
         invest = []
         m = re.match('^name (.*)', line)
         if m:
-            invest.append(make_ele(m.group(1), "Name", None))
+            invest.append(make_ele(m.group(1), "name", None))
+            inv = make_ele("", "Investigation_Area", invest)
+            elems.append(inv)
+
 
         m = re.match('^type (.*)', line)
         if m:
-            invest.append(make_ele(m.group(1), "Type", None))
+            for ele in elems:
+                if ele.tag == "Investigation_Area":
+                    ele.ele.append(make_ele(m.group(1), "Type", None))
 
         refs = []
         m = re.match ('^lid_reference (.*)', line)
         if m:
-            elems.append(make_ele(m.group(1), "Lid_Reference", None))
+            refs.append(make_ele(m.group(1), "Lid_Reference", None))
+            investigation = getele(elems, "Investigation_Area")
+            investigation.ele.append(make_ele("", "Internal_Reference", refs))
+
 
         m = re.match('^reference_types (.*)', line)
         if m:
-            elems.append(make_ele(m.group(1), "Reference_Types", None))
-
+            element = getele(elems, "Investigation_Area")
+            intref = getele(element, "Internal_Reference")
+            print(intref.ele)
+            intref.ele.append(make_ele(m.group(1), "Reference_Types", None))
+            print(intref.ele)
 
 #############################
 #this is observing system components and target id which are fairly mature at this time
