@@ -44,9 +44,9 @@ def defaultgeneration(num): #number of files you want to generate
 
 def filewriter(filename, num):
     f = open(filename, "w+")
-    f.write("time " + time())
-    f.write("purpose Science")
-    f.write("processing_level Partially Processed")
-    f.write
+    f.write("time " + time() + "\n")
+    f.write("purpose Science\n")
+    f.write("processing_level Partially Processed\n")
+    f.write("")
     f.close()
 
