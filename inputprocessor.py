@@ -12,7 +12,7 @@ def getele(elems, string):
             if ele.tag == string:
                 return ele
     else:
-        return elems.ele
+        return None
 
 def process(arr_line):
     #this is what we return in the end, it is a list of elems as defined in the builder class
@@ -109,11 +109,14 @@ def process(arr_line):
 #this is observing system components and target id which are fairly mature at this time
 #only need a little bit of work to more or less fully flesh them out.
 
-
         m = re.match('^Observing_System_Components name (.*) type (.*)', line)
         if m:
             obs_sys_comp =[(make_ele(m.group(1), "Name", None)), make_ele(m.group(2), "Type", None)]
-            elems.append(make_ele("", "Observing_System_Componenets", obs_sys_comp))
+            if getele(elems, "Observing_System") is None:
+                elems.append(make_ele("", "Observing_System",[(make_ele("", "Observing_System_Components", obs_sys_comp))]))
+            else:
+                obssys = getele(elems, "Observing_System")
+                obssys.ele.append(make_ele("","Observing_System_Components", obs_sys_comp))
             #object?
 
         m = re.match ('^Target_Identification name (.*) type (.*)', line)
