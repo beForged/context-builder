@@ -109,7 +109,7 @@ def process(arr_line):
 #this is observing system components and target id which are fairly mature at this time
 #only need a little bit of work to more or less fully flesh them out.
 
-        m = re.match('^Observing_System_Components name (.*) type (.*) reference_type (.*)', line)
+        m = re.match('^Observing_System_Components name (.*) type (.*) lid_reference (.*) reference_type (.*)', line)
         if m:
             obs_sys_comp =[(make_ele(m.group(1), "Name", None)), make_ele(m.group(2), "Type", None), make_ele(m.group(3), "Reference_Type", None)]
             if getele(elems, "Observing_System") is None:
