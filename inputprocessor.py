@@ -137,10 +137,15 @@ def testinput(arr):
         #this counts,for each file in the array, it processes it, creates an file name, and
         #outputs them as "output#.xml" where # is a number.
         counter = counter + 1
+        #process the files into element objects
         a = process(parse_file(filename))
+        #makes these element objects into python xml tree
         res = context_builder(a)
+        #indent/format the tree
         indent(res)
+        #transform it from a collection of elements into a tree
         tree = ET.ElementTree(res)
+        #and then writing the tree into a file 
         output = "output" + str(counter) + ".xml"
         tree.write(output)
 
