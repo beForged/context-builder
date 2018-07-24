@@ -43,9 +43,12 @@ def namelater(arr):
            types = [x.strip() for x in a.split(' ')]
 
 def defaultgeneration(num): #number of files you want to generate
+    arr = []
     for x in range(0, num):
         filename = "generated-input" + str(x)
+        arr.append(filename)
         filewriter(filename, x)
+    testinput(arr)
 
 #this is just like, make something that we build off of
 #default input files.
@@ -64,6 +67,8 @@ def filewriter(filename, num):
     for x in range(1,3):
         f.write("Target_Identification name some-comet" + str(x) + " type comet" + str(x) + "\n")
     f.close()
+
 if __name__ == "__main__":
-    defaultgeneration(3)
+    num = input("how many files to generate: ")
+    defaultgeneration(int(num))
 
