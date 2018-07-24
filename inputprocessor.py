@@ -150,4 +150,5 @@ def getinput():
     arr = [x.strip() for x in var.split(',')]
     testinput(arr)
 
-getinput()
+if __name__ == "__main__":
+    getinput()

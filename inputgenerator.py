@@ -6,9 +6,6 @@
 from inputprocessor import *
 from builder import *
 
-def cmdline():
-    names = input("give a comma separated list of names: ")
-    names = [x.strip() for x in names.split(',')]
 
 
 def fileinp():
@@ -18,11 +15,15 @@ def fileinp():
         arr.append(parse_file(filename))
     return arr
     #arr is a list of a list of file line
+
+def cmdline():
+    names = input("give a comma separated list of names: ")
+    names = [x.strip() for x in names.split(',')]
     
 def generate_facet():
     wavelength = ['Infrared', 'Microwave', 'Millimeter', 'Near Infrared', 'Radio', 'Submillimeter']
     disc_name = ['Imaging', 'fields', 'Small Bodies']
-    return "wavelength_range " + random.choice(wavelength) + " dicipline_name " + random.choice(disc_name)
+    return "wavelength_range " + random.choice(wavelength) + ", dicipline_name " + random.choice(disc_name)
 
 def namelater(arr):
     for line in arr:
@@ -32,14 +33,14 @@ def namelater(arr):
        if m:
             a = m.group(1)
             name = [x.strip() for x in a.split(' ')]
-        m = re.match('type (.*)', line)
-        if m:
-            a = m.group(1)
-            types = [x.strip() for x in a.split(' ')]
-        m = re.match('time (.*)', line)
-        if m:
-            a = m.group(1)
-            types = [x.strip() for x in a.split(' ')]
+       m = re.match('type (.*)', line)
+       if m:
+           a = m.group(1)
+           types = [x.strip() for x in a.split(' ')]
+       m = re.match('time (.*)', line)
+       if m:
+           a = m.group(1)
+           types = [x.strip() for x in a.split(' ')]
 
 def defaultgeneration(num): #number of files you want to generate
     for x in range(0, num):
@@ -58,7 +59,11 @@ def filewriter(filename, num):
     f.write("type mission\n") #choose from a list? input would be good here
     f.write("lid_reference urn:nasa:pds:context:investigation:mission" + str(num)+ "\n")
     f.write("reference_types collection_to_investigation\n")
-    for x in range(1..((num % 3) + 1)):
-        f.write("Observing_System_Components name \n")
+    for x in range(0,((num % 3) + 1)):
+        f.write("Observing_System_Components name spaceship" + str(x) + " type observer " + "reference_type is_something" + "\n")
+    for x in range(1,3):
+        f.write("Target_Identification name some-comet" + str(x) + " type comet" + str(x) + "\n")
     f.close()
+if __name__ == "__main__":
+    defaultgeneration(3)
 
