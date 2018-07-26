@@ -3,3 +3,4 @@ sample.xml
 __pycache__
 output*
 generated-input*
+clean.sh

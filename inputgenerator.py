@@ -46,7 +46,7 @@ def defaultgeneration(num, default, name, obs, targ): #number of files you want 
     for x in range(0, num):
         filename = "generated-input" + str(x)
         arr.append(filename)
-        if default == 1
+        if default == 1:
             filewriter(filename, x)
         else:
             commandline(filename, x, name, obs, targ) 
@@ -63,18 +63,17 @@ def commandline(filename, num, name, observers, targets):
     f.write("lid_reference urn:nasa:pds:context:investigation:mission" + str(num)+ "\n")
     f.write("reference_types collection_to_investigation\n")
     for x in range(0,observers):
-        f.write("Observing_System_Components name spaceship" + str(x) + " type observer " +"lid_reference" + lidgen() +  "reference_type is_something" + "\n")
+        f.write("Observing_System_Components name spaceship" + str(x) + " type observer " +"lid_reference " + lidgen() +  "reference_type is_something" + "\n")
     for x in range(1,targets):
         f.write("Target_Identification name randomname" + str(x) + " type comet" + "\n")
     f.close()
 
 
-def cmdline():
-    num = int(input("how many files in the collection"))
-    name = input("set a sample name")
-    observers = int(input("set a number of observers"))
-    targets = int(input("set a number of targets"))
-    commandline(name, observers, targets)
+def cmdline(num):
+    name = input("set a sample name: ")
+    observers = int(input("set a number of observers: "))
+    targets = int(input("set a number of targets: "))
+    defaultgeneration(num,2, name, observers, targets)
 
 #this is just like, make something that we build off of
 #default input files.
@@ -89,12 +88,16 @@ def filewriter(filename, num):
     f.write("lid_reference urn:nasa:pds:context:investigation:mission" + str(num)+ "\n")
     f.write("reference_types collection_to_investigation\n")
     for x in range(0,((num % 3) + 1)):
-        f.write("Observing_System_Components name spaceship" + str(x) + " type observer " +"lid_reference" + lidgen() +  "reference_type is_something" + "\n")
+        f.write("Observing_System_Components name spaceship" + str(x) + " type observer " +"lid_reference " + lidgen() +  " reference_type is_something" + "\n")
     for x in range(1,3):
         f.write("Target_Identification name randomname" + str(x) + " type comet" + "\n")
     f.close()
 
 if __name__ == "__main__":
     num = input("how many files to generate: ")
-    defaultgeneration(int(num), 1, None, None, None)
+    default = input("would you like to enter more specific information (y/n):")
+    if default == 'y':
+        cmdline(int(num))
+    else:
+        defaultgeneration(int(num), 1, None, None, None)
 
