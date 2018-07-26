@@ -111,7 +111,7 @@ def process(arr_line):
 
         m = re.match('^Observing_System_Components name (.*) type (.*) lid_reference (.*) reference_type (.*)', line)
         if m:
-            obs_sys_comp =[(make_ele(m.group(1), "Name", None)), make_ele(m.group(2), "Type", None), make_ele(m.group(3), "Reference_Type", None)]
+            obs_sys_comp =[(make_ele(m.group(1), "Name", None)), make_ele(m.group(2), "Type", None), make_ele(m.group(3), "Lid_Reference", None), make_ele(m.group(4), "Reference_Type", None)]
             if getele(elems, "Observing_System") is None:
                 elems.append(make_ele("", "Observing_System",[(make_ele("", "Observing_System_Components", obs_sys_comp))]))
             else:
