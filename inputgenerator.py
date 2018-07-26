@@ -105,7 +105,7 @@ def filewriter(filename, num):
     for x in range(0,((num % 3) + 1)):
         f.write("Observing_System_Components name spaceship" + str(x) + typegen(2) +" lid_reference " + lidgen() +  reftype(2) + "\n")
     for x in range(1,3):
-        f.write("Target_Identification name randomname" + str(x) + " type "+ typegen(3) + "\n")
+        f.write("Target_Identification name randomname" + str(x) +  typegen(3) + "\n")
     f.close()
 
 if __name__ == "__main__":
