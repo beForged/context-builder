@@ -47,10 +47,13 @@ def processinglvl():
 def typegen(sec):
     invest = ["Individual Investigation", "Mission", "Observing Campaign", "Other Investigation"]
     obs = ["Asteroid", "Calibration", "Comet", "Dust", "Dwarf Planet", "Meteorite", "Meteroid", "Satellite"]
+    obssys = ["Airborne", "Aircraft", "Balloon", "Facility", "Instrument", "Laboratory", "Observatory", "Spacecraft", "Telescope"]
     if sec == 1:
-        return "type " + random.choice(invest)
+        return " type " + random.choice(invest)
+    elif sec == 2:
+        return " type " + random.choice(obssys)
     else:
-        return "type " + random.choice(obs)
+        return " type " + random.choice(obs)
 
 
 def defaultgeneration(num, default, name, obs, targ): #number of files you want to generate
@@ -75,9 +78,9 @@ def commandline(filename, num, name, observers, targets):
     f.write("lid_reference "+ lidgen() + str(num)+ "\n")
     f.write(reftype(1) + "\n")
     for x in range(0,observers):
-        f.write("Observing_System_Components name spaceship" + str(x) + " type " typegen(2) +" lid_reference " + lidgen() +  reftype(2) + "\n")
+        f.write("Observing_System_Components name spaceship" + str(x) + typegen(2) +" lid_reference " + lidgen() +  reftype(2) + "\n")
     for x in range(1,targets):
-        f.write("Target_Identification name randomname" + str(x) + " type comet" + "\n")
+        f.write("Target_Identification name randomname" + str(x) + typegen(3) + "\n")
     f.close()
 
 
@@ -100,9 +103,9 @@ def filewriter(filename, num):
     f.write("lid_reference "+ lidgen() + str(num)+ "\n")
     f.write(reftype(1) + "\n")
     for x in range(0,((num % 3) + 1)):
-        f.write("Observing_System_Components name spaceship" + str(x) + " type " typegen(2) +" lid_reference " + lidgen() +  reftype(2) + "\n")
+        f.write("Observing_System_Components name spaceship" + str(x) + typegen(2) +" lid_reference " + lidgen() +  reftype(2) + "\n")
     for x in range(1,3):
-        f.write("Target_Identification name randomname" + str(x) + " type comet" + "\n")
+        f.write("Target_Identification name randomname" + str(x) + " type "+ typegen(3) + "\n")
     f.close()
 
 if __name__ == "__main__":
