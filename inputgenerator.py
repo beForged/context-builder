@@ -63,7 +63,7 @@ def commandline(filename, num, name, observers, targets):
     f.write("lid_reference urn:nasa:pds:context:investigation:mission" + str(num)+ "\n")
     f.write("reference_types collection_to_investigation\n")
     for x in range(0,observers):
-        f.write("Observing_System_Components name spaceship" + str(x) + " type observer " +"lid_reference " + lidgen() +  "reference_type is_something" + "\n")
+        f.write("Observing_System_Components name spaceship" + str(x) + " type observer " +"lid_reference " + lidgen() +  " reference_type is_something" + "\n")
     for x in range(1,targets):
         f.write("Target_Identification name randomname" + str(x) + " type comet" + "\n")
     f.close()
