@@ -109,9 +109,14 @@ def process(arr_line):
 #this is observing system components and target id which are fairly mature at this time
 #only need a little bit of work to more or less fully flesh them out.
 
-        m = re.match('^Observing_System_Components name (.*) type (.*) lid_reference (.*) reference_type (.*)', line)
+        m = re.match('^Observing_System_Components name (\w*) (type (.*)) lid_reference (.*) reference_type (.*)', line)
         if m:
-            obs_sys_comp =[(make_ele(m.group(1), "Name", None)), make_ele(m.group(2), "Type", None), make_ele(m.group(3), "Lid_Reference", None), make_ele(m.group(4), "Reference_Type", None)]
+            types = m.group(3).split("type")
+            obs_sys_comp =[(make_ele(m.group(1), "Name", None))]
+            for x in types:
+                obs_sys_comp.append(make_ele(x, "Type", None))
+            obs_sys_comp.append(make_ele(m.group(4), "Lid_Reference", None))
+            obs_sys_comp.append(make_ele(m.group(5), "Reference_Type", None))
             if getele(elems, "Observing_System") is None:
                 elems.append(make_ele("", "Observing_System",[(make_ele("", "Observing_System_Components", obs_sys_comp))]))
             else:
@@ -119,10 +124,14 @@ def process(arr_line):
                 obssys.ele.append(make_ele("","Observing_System_Components", obs_sys_comp))
             #object?
 
-        m = re.match ('^Target_Identification name (.*) type (.*)', line)
+        m = re.match ('^Target_Identification name (\w*) (type (.*))', line)
             #multiple
         if m:
-            targ_id =[(make_ele(m.group(1), "Name", None)), make_ele(m.group(2), "Type", None)]
+            types = m.group(3).split("type")
+            
+            targ_id =[(make_ele(m.group(1), "Name", None))]
+            for x in types:
+                targ_id.append(make_ele(x, "Type", None))
             elems.append(make_ele("", "Target_Identification", targ_id))
     return elems
 
