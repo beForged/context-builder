@@ -53,7 +53,10 @@ def typegen(sec):
     elif sec == 2:
         return " type " + random.choice(obssys)
     else:
-        return " type " + random.choice(obs)
+        string = " type " + random.choice(obs) 
+        if random.uniform(0,1) == 1:
+            string + random.choice(obs)
+        return string
 
 
 def defaultgeneration(num, default, name, obs, targ): #number of files you want to generate

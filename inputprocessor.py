@@ -124,6 +124,9 @@ def process(arr_line):
                 obssys.ele.append(make_ele("","Observing_System_Components", obs_sys_comp))
             #object?
 
+####################
+#target identification
+
         m = re.match ('^Target_Identification name (\w*) (type (.*))', line)
             #multiple
         if m:
