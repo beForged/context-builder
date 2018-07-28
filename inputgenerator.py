@@ -24,6 +24,7 @@ def generate_facet():
     disc_name = ['Imaging', 'fields', 'Small Bodies']
     return "wavelength_range " + random.choice(wavelength) + ", dicipline_name " + random.choice(disc_name)
 
+#returns a string with refernce types, depending on what category it goes in.
 def reftype(sec):
     obsref= ["is_airborne", "is_facility", "is_instrument", "is_instrument_host", "is_other", "is_telescope"]
     investref = ["bundle_to_investigation", "collection_to_investigation", "document_to_investigation", "data_to_investigation"]
@@ -32,18 +33,23 @@ def reftype(sec):
     else:
         return " reference_type " + random.choice(obsref)
 
+#should actually generate a lid reference sometime TODO i guess
 def lidgen():
     return "sample_lid_reference"
 
 
+#generates a prupose string
 def purpose():
     perp = ["Navigation", "Science", "Calibration"]
     return "purpose " + random.choice(perp)
 
+#processing level string generation
 def processinglvl():
     lvls = ["Calibrated", "Derived", "Partially Processed", "Raw", "Telemetry"]
     return "processing_level " + random.choice(lvls)
 
+#there are 3 different categories  for type, so this will return something for each
+#one of them will randomly return 2 different types, although it needs to be modified so it doesnt repeat
 def typegen(sec):
     invest = ["Individual Investigation", "Mission", "Observing Campaign", "Other Investigation"]
     obs = ["Asteroid", "Calibration", "Comet", "Dust", "Dwarf Planet", "Meteorite", "Meteroid", "Satellite"]
@@ -59,6 +65,7 @@ def typegen(sec):
         return string
 
 
+#just a small function that will make filenames, and also make the loop that will generate files
 def defaultgeneration(num, default, name, obs, targ): #number of files you want to generate
     arr = []
     for x in range(0, num):
@@ -70,6 +77,7 @@ def defaultgeneration(num, default, name, obs, targ): #number of files you want 
             commandline(filename, x, name, obs, targ) 
     testinput(arr)
 
+#takes in a name, and some numbers to make a more specific input file
 def commandline(filename, num, name, observers, targets):
     f = open(filename, "w+")
     f.write("time " + time() + "\n")
@@ -80,13 +88,16 @@ def commandline(filename, num, name, observers, targets):
     f.write(typegen(1) + "\n") #choose from a list? input would be good here
     f.write("lid_reference "+ lidgen() + str(num)+ "\n")
     f.write(reftype(1) + "\n")
+    #some number of observers to be made, 
     for x in range(0,observers):
         f.write("Observing_System_Components name spaceship" + str(x) + typegen(2) +" lid_reference " + lidgen() +  reftype(2) + "\n")
+        #some number of targets
     for x in range(1,targets):
         f.write("Target_Identification name randomname" + str(x) + typegen(3) + "\n")
     f.close()
 
 
+#prompts for setting up the more specific input file
 def cmdline(num):
     name = input("set a sample name: ")
     observers = int(input("set a number of observers: "))
@@ -111,6 +122,7 @@ def filewriter(filename, num):
         f.write("Target_Identification name randomname" + str(x) +  typegen(3) + "\n")
     f.close()
 
+#''main' function, will run this if you run 'python inputgenerator.py'
 if __name__ == "__main__":
     num = input("how many files to generate: ")
     default = input("would you like to enter more specific information (y/n):")
