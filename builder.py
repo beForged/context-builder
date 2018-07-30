@@ -1,6 +1,8 @@
 import xml.etree.ElementTree as ET
 import random
 import sys
+from datetime import timedelta
+from datetime import datetime
 
     #a class that contains a parent, a tag, and text id 
 class Ele:
@@ -65,6 +67,7 @@ def helper(root, element):
 
 #returns time element that consists of start and stop and sometimes the other two
 #~can maybe control after, and before, so far they are going to be random times
+#probably never to be used
 def time_element():
     num = random.randint(2,5)
     time_titles = ['start_date_time','stop_date_time', 'local_mean_solar_time',
@@ -81,8 +84,16 @@ def time():
     month = random.randint(1,12)
     day = random.randint(1,30)
     #missing time HH:MM:SSSS
-    date = str(year) + "-" + str(month) + "-" + str(day) + "Z"
-    return date
+    date = datetime(year, month, day)
+    delta = timedelta(seconds = random.randint(200, 86399))
+    start = date + delta
+    end = start + timedelta(seconds = random.randint(200, 50000))
+    return timeret(start) + " " + timeret(end)
+
+def timeret(date):
+    ret = date.strftime("%Y-%m-%dT%H:%M:%sZ")
+    return ret
+    
     
 
 #this is probably a useless function, but the list of items are left here for future reference

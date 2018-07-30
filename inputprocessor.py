@@ -34,9 +34,9 @@ def process(arr_line):
 #still have to implement time math
 
         #remember group 0 is entire matched group 1 is first group
-        m = re.match ('^time (.*)',line)
+        m = re.match ('^time (.*) (.*)',line)
         if m: 
-            time = [(make_ele(m.group(1), "start_date_time", None)),make_ele(m.group(1), "stop_date_time", None)]
+            time = [(make_ele(m.group(1), "start_date_time", None)),make_ele(m.group(2), "stop_date_time", None)]
             elems.append(make_ele("","Time_Coordinates", time))
 
 ################################################
@@ -99,7 +99,7 @@ def process(arr_line):
             investigation.ele.append(make_ele("", "Internal_Reference", refs))
 
 
-        m = re.match('^reference_types (.*)', line)
+        m = re.match('^reference_types? (.*)', line)
         if m:
             investigation = getele(elems, "Investigation_Area")
             intref = getele(investigation.ele, "Internal_Reference")
@@ -115,8 +115,10 @@ def process(arr_line):
             obs_sys_comp =[(make_ele(m.group(1), "Name", None))]
             for x in types:
                 obs_sys_comp.append(make_ele(x, "Type", None))
-            obs_sys_comp.append(make_ele(m.group(4), "Lid_Reference", None))
-            obs_sys_comp.append(make_ele(m.group(5), "Reference_Type", None))
+            types = []
+            types.append(make_ele(m.group(4), "Lid_Reference", None))
+            types.append(make_ele(m.group(5), "Reference_Type", None))
+            obs_sys_comp.append(make_ele("", "Internal_Reference", types))
             if getele(elems, "Observing_System") is None:
                 elems.append(make_ele("", "Observing_System",[(make_ele("", "Observing_System_Components", obs_sys_comp))]))
             else:

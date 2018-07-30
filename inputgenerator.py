@@ -29,7 +29,7 @@ def reftype(sec):
     obsref= ["is_airborne", "is_facility", "is_instrument", "is_instrument_host", "is_other", "is_telescope"]
     investref = ["bundle_to_investigation", "collection_to_investigation", "document_to_investigation", "data_to_investigation"]
     if sec == 1:
-        return " reference_type " + random.choice(investref)
+        return "reference_type " + random.choice(investref)
     else:
         return " reference_type " + random.choice(obsref)
 
@@ -55,7 +55,7 @@ def typegen(sec):
     obs = ["Asteroid", "Calibration", "Comet", "Dust", "Dwarf Planet", "Meteorite", "Meteroid", "Satellite"]
     obssys = ["Airborne", "Aircraft", "Balloon", "Facility", "Instrument", "Laboratory", "Observatory", "Spacecraft", "Telescope"]
     if sec == 1:
-        return " type " + random.choice(invest)
+        return "type " + random.choice(invest)
     elif sec == 2:
         return " type " + random.choice(obssys)
     else:
@@ -113,7 +113,7 @@ def filewriter(filename, num):
     f.write(processinglvl() + "\n")
     f.write("science_facets " + generate_facet() + "\n")
     f.write("name spaceship" + str(num)+ "\n")
-    f.write("type mission\n") #choose from a list? input would be good here
+    f.write(typegen(1) + "\n") #choose from a list? input would be good here
     f.write("lid_reference "+ lidgen() + str(num)+ "\n")
     f.write(reftype(1) + "\n")
     for x in range(0,((num % 3) + 1)):
