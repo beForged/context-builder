@@ -22,7 +22,17 @@ def fileinp():
 def generate_facet():
     wavelength = ['Infrared', 'Microwave', 'Millimeter', 'Near Infrared', 'Radio', 'Submillimeter']
     disc_name = ['Imaging', 'fields', 'Small Bodies']
-    return "wavelength_range " + random.choice(wavelength) + ", dicipline_name " + random.choice(disc_name)
+    disc = random.choice(disc_name)
+    facet = "wavelength_range " + random.choice(wavelength) + ", dicipline_name " + disc
+    if random.uniform(0,1) == 1:
+        facet = facet + ", facet1 "  
+        if disc = 'Imaging':
+            facet = facet + random.choice(["Greyscale", "Color", "Movie", "Color Movie"])
+        elif disc = 'fields':
+            facet = facet + random.choice(["Electric", "Magnetic"])
+        else:
+            facet = facet + random.choice("Lightcurve", "Meteorics", "Physical Properties", "Taxonomy", "Historical Reference"])
+    return facet
 
 #returns a string with refernce types, depending on what category it goes in.
 def reftype(sec):
@@ -52,7 +62,7 @@ def processinglvl():
 #one of them will randomly return 2 different types, although it needs to be modified so it doesnt repeat
 def typegen(sec):
     invest = ["Individual Investigation", "Mission", "Observing Campaign", "Other Investigation"]
-    obs = ["Asteroid", "Calibration", "Comet", "Dust", "Dwarf Planet", "Meteorite", "Meteroid", "Satellite"]
+    obs = ["Asteroid",  "Comet", "Dust", "Dwarf Planet", "Meteorite", "Meteroid", "Satellite"]
     obssys = ["Airborne", "Aircraft", "Balloon", "Facility", "Instrument", "Laboratory", "Observatory", "Spacecraft", "Telescope"]
     if sec == 1:
         return "type " + random.choice(invest)
@@ -85,7 +95,7 @@ def commandline(filename, num, name, observers, targets):
     f.write(processinglvl() + "\n")
     f.write("science_facets " + generate_facet() + "\n")
     f.write("name " + name + str(num)+ "\n")
-    f.write(typegen(1) + "\n") #choose from a list? input would be good here
+    f.write(typegen(1) + "\n") 
     f.write("lid_reference "+ lidgen() + str(num)+ "\n")
     f.write(reftype(1) + "\n")
     #some number of observers to be made, 
