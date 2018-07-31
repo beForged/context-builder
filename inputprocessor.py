@@ -21,6 +21,8 @@ def process(arr_line):
 
 #for each line in the file, we match it to a specific regex, and then insert it into the elems
 #list, as elem objects, so that they can be easily turned into xml files, 
+#commented into different sections. each of the match statements can be read to see
+#what input format is.
     for line in arr_line:
         line.rstrip()
         
@@ -31,7 +33,6 @@ def process(arr_line):
 #########################
 #time math
 
-#still have to implement time math
 
         #remember group 0 is entire matched group 1 is first group
         m = re.match ('^time (.*) (.*)',line)
@@ -88,7 +89,7 @@ def process(arr_line):
         m = re.match('^type (.*)', line)
         if m:
             for ele in elems:
-                if ele.tag == "Investigation_Area":
+                if ele.tag= "Investigation_Area":
                     ele.ele.append(make_ele(m.group(1), "Type", None))
 
         refs = []
