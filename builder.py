@@ -82,7 +82,7 @@ def time_element():
 def time():
     year = random.randint(1900, 2030)
     month = random.randint(1,12)
-    day = random.randint(1,30)
+    day = random.randint(1,28)
     #missing time HH:MM:SSSS
     date = datetime(year, month, day)
     delta = timedelta(seconds = random.randint(200, 86399))

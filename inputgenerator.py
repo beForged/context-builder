@@ -26,12 +26,12 @@ def generate_facet():
     facet = "wavelength_range " + random.choice(wavelength) + ", dicipline_name " + disc
     if random.uniform(0,1) == 1:
         facet = facet + ", facet1 "  
-        if disc = 'Imaging':
+        if disc == 'Imaging':
             facet = facet + random.choice(["Greyscale", "Color", "Movie", "Color Movie"])
-        elif disc = 'fields':
+        elif disc == 'fields':
             facet = facet + random.choice(["Electric", "Magnetic"])
         else:
-            facet = facet + random.choice("Lightcurve", "Meteorics", "Physical Properties", "Taxonomy", "Historical Reference"])
+            facet = facet + random.choice(["Lightcurve", "Meteorics", "Physical Properties", "Taxonomy", "Historical Reference"])
     return facet
 
 #returns a string with refernce types, depending on what category it goes in.

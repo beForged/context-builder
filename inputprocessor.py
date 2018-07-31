@@ -35,7 +35,7 @@ def process(arr_line):
 
 
         #remember group 0 is entire matched group 1 is first group
-        m = re.match ('^time (.*) (.*)',line)
+        m = re.match ('^time (.*) (.*)',line, re.IGNORECASE)
         if m: 
             time = [(make_ele(m.group(1), "start_date_time", None)),make_ele(m.group(2), "stop_date_time", None)]
             elems.append(make_ele("","Time_Coordinates", time))
@@ -43,18 +43,19 @@ def process(arr_line):
 ################################################
 #Primary Results Summary
 
-        m = re.match('^(?:purpose) (.*)', line)
+        m = re.match('^(?:purpose) (.*)', line, re.IGNORECASE)
         if m:
             perp = make_ele(m.group(1), "Purpose", None)
             elems.append(make_ele("", "Primary_Result_Summary", perp))
 
-        m = re.match('^processing_level (.*)', line)
+        m = re.match('^processing_level (.*)', line, re.IGNORECASE)
         if m:
             for ele in elems:
                 if ele.tag == "Primary_Result_Summary":
                     sub = [ele.ele,make_ele(m.group(1), "processing_level", None)]
                     ele.set_ele(sub)
-        m = re.match('science_facets (.*)', line)#facets will just be in a big line I guess
+        m = re.match('science_facets (.*)', line, re.IGNORECASE)
+        #facets will just be in a big line I guess
         if m: 
             fac = []
             lst = m.group(1)
@@ -79,28 +80,28 @@ def process(arr_line):
 
 
         invest = []
-        m = re.match('^name (.*)', line)
+        m = re.match('^name (.*)', line, re.IGNORECASE)
         if m:
             invest.append(make_ele(m.group(1), "name", None))
             inv = make_ele("", "Investigation_Area", invest)
             elems.append(inv)
 
 
-        m = re.match('^type (.*)', line)
+        m = re.match('^type (.*)', line, re.IGNORECASE)
         if m:
             for ele in elems:
                 if ele.tag == "Investigation_Area":
                     ele.ele.append(make_ele(m.group(1), "Type", None))
 
         refs = []
-        m = re.match ('^lid_reference (.*)', line)
+        m = re.match ('^lid_reference (.*)', line, re.IGNORECASE)
         if m:
             refs.append(make_ele(m.group(1), "Lid_Reference", None))
             investigation = getele(elems, "Investigation_Area")
             investigation.ele.append(make_ele("", "Internal_Reference", refs))
 
 
-        m = re.match('^reference_types? (.*)', line)
+        m = re.match('^reference_types? (.*)', line, re.IGNORECASE)
         if m:
             investigation = getele(elems, "Investigation_Area")
             intref = getele(investigation.ele, "Internal_Reference")
@@ -110,7 +111,7 @@ def process(arr_line):
 #this is observing system components and target id which are fairly mature at this time
 #only need a little bit of work to more or less fully flesh them out.
 
-        m = re.match('^Observing_System_Components name (\w*) (type (.*)) lid_reference (.*) reference_type (.*)', line)
+        m = re.match('^Observing_System_Components name (\w*) (type (.*)) lid_reference (.*) reference_type (.*)', line, re.IGNORECASE)
         if m:
             types = m.group(3).split("type")
             obs_sys_comp =[(make_ele(m.group(1), "Name", None))]
@@ -130,7 +131,7 @@ def process(arr_line):
 ####################
 #target identification
 
-        m = re.match ('^Target_Identification name (\w*) (type (.*))', line)
+        m = re.match ('^Target_Identification name (\w*) (type (.*))', line, re.IGNORECASE)
             #multiple
         if m:
             types = m.group(3).split("type")
