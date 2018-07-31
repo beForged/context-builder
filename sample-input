@@ -1,0 +1,15 @@
+#do not use brackets in your actual input file
+time 2014-09-25T09:30:42Z 2014-09-25T11:30:42Z
+#replace these
+purpose [insert here]
+processing_level [insert here]
+science_facets wavelength_range [insert here], dicipline_name  [insert here]
+#comma separated but as many as you want in the same line
+name [insert here]
+type [insert here]
+lid_reference [insert here]
+reference_types [insert here]
+Observing_System_Components name [insert here] type [insert here] lid_reference [insert here] reference_type [insert here]
+#insert as many as desired
+Target_Identification name [insert here] type [insert here]
+#insert as many as desired
