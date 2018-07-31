@@ -89,7 +89,7 @@ def process(arr_line):
         m = re.match('^type (.*)', line)
         if m:
             for ele in elems:
-                if ele.tag= "Investigation_Area":
+                if ele.tag == "Investigation_Area":
                     ele.ele.append(make_ele(m.group(1), "Type", None))
 
         refs = []
