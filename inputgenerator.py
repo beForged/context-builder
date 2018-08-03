@@ -44,8 +44,9 @@ def reftype(sec):
         return " reference_type " + random.choice(obsref)
 
 #should actually generate a lid reference sometime TODO i guess
-def lidgen():
-    return "sample_lid_reference"
+def lidgen(where, what):
+    lid = "urn:nasa:pds:" + where + ":" + what +":sample"
+    return lid
 
 
 #generates a prupose string
@@ -96,11 +97,11 @@ def commandline(filename, num, name, observers, targets):
     f.write("science_facets " + generate_facet() + "\n")
     f.write("name " + name + str(num)+ "\n")
     f.write(typegen(1) + "\n") 
-    f.write("lid_reference "+ lidgen() + str(num)+ "\n")
+    f.write("lid_reference "+ lidgen("sbn", "sample" + str(num)) + "\n")
     f.write(reftype(1) + "\n")
     #some number of observers to be made, 
     for x in range(0,observers):
-        f.write("Observing_System_Components name spaceship" + str(x) + typegen(2) +" lid_reference " + lidgen() +  reftype(2) + "\n")
+        f.write("Observing_System_Components name spaceship" + str(x) + typegen(2) +" lid_reference " + lidgen("context", "observing") +  reftype(2) + "\n")
         #some number of targets
     for x in range(1,targets):
         f.write("Target_Identification name randomname" + str(x) + typegen(3) + "\n")
@@ -124,10 +125,10 @@ def filewriter(filename, num):
     f.write("science_facets " + generate_facet() + "\n")
     f.write("name spaceship" + str(num)+ "\n")
     f.write(typegen(1) + "\n") #choose from a list? input would be good here
-    f.write("lid_reference "+ lidgen() + str(num)+ "\n")
+    f.write("lid_reference "+ lidgen("sbn", "sample" + str(num)) + str(num)+ "\n")
     f.write(reftype(1) + "\n")
     for x in range(0,((num % 3) + 1)):
-        f.write("Observing_System_Components name spaceship" + str(x) + typegen(2) +" lid_reference " + lidgen() +  reftype(2) + "\n")
+        f.write("Observing_System_Components name spaceship" + str(x) + typegen(2) +" lid_reference " + lidgen("context", "observing") +  reftype(2) + "\n")
     for x in range(1,3):
         f.write("Target_Identification name randomname" + str(x) +  typegen(3) + "\n")
     f.close()
