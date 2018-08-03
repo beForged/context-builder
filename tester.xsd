@@ -67,11 +67,65 @@
         <xs:sequence>
             <xs:element name="type" type="pds:type" minOccurs="0" maxOccurs="1"> </xs:element>
             <xs:element name="purpose" type="pds:purpose" minOccurs="1" maxOccurs="unbounded"> </xs:element>
-            <xs:element name="data_regime" type="pds:data_regime" minOccurs="0" maxOccurs="unbounded"> </xs:element>
             <xs:element name="processing_level" type="pds:processing_level" minOccurs="1" maxOccurs="unbounded"> </xs:element>
-            <xs:element name="processing_level_id" type="pds:processing_level_id" minOccurs="0" maxOccurs="1"> </xs:element>
-            <xs:element name="description" type="pds:description" minOccurs="0" maxOccurs="1"> </xs:element>
             <xs:element name="Science_Facets" type="pds:Science_Facets" minOccurs="0" maxOccurs="unbounded"> </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:complexType name="Science_Facets">
+        <xs:annotation>
+            <xs:documentation>The Science_Facets class contains the
+                science-related search facets.  It is optional and may be
+                repeated if an product has facets related to, for example, two
+                different disciplines (as defined by the discipline_name facet).
+                Note that Science_Facets was modeled with Discipline_Facets as a
+                component and Discipline_Facets was modeled with Group_Facet1
+                and Group_Facet2 as components. This dependency hierarchy was
+                flattened and only Science_Facets exists in the
+                schema.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="wavelength_range" type="pds:wavelength_range" minOccurs="0" maxOccurs="unbounded"> </xs:element>
+            <xs:element name="domain" type="pds:domain" minOccurs="0" maxOccurs="unbounded"> </xs:element>
+            <xs:element name="discipline_name" type="pds:ASCII_Short_String_Collapsed" minOccurs="1" maxOccurs="1"> </xs:element>
+            <xs:element name="facet1" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </xs:element>
+            <xs:element name="subfacet1" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="unbounded"> </xs:element>
+            <xs:element name="facet2" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="1"> </xs:element>
+            <xs:element name="subfacet2" type="pds:ASCII_Short_String_Collapsed" minOccurs="0" maxOccurs="unbounded"> </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:complexType name="Investigation_Area">
+        <xs:annotation>
+            <xs:documentation>The Investigation_Area class provides
+                information about an investigation (mission, observing campaign
+                or other coordinated, large-scale data collection
+                effort).
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="name" type="pds:name" minOccurs="1" maxOccurs="1"> </xs:element>
+            <xs:element name="type" type="pds:type" minOccurs="1" maxOccurs="1"> </xs:element>
+            <xs:element ref="pds:Internal_Reference" minOccurs="1" maxOccurs="unbounded"> </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:complexType name="Internal_Reference">
+        <xs:annotation>
+            <xs:documentation>
+                The Internal_Reference class is used to cross-reference other products in the PDS registry system.
+                >hopefully removing an option in choice doesnt break it
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:choice minOccurs="1" maxOccurs="1">
+                <xs:element name="lid_reference" type="pds:lid_reference"> </xs:element>
+            </xs:choice>
+            <xs:element name="reference_type" type="pds:reference_type" minOccurs="1" maxOccurs="1"> </xs:element>
         </xs:sequence>
     </xs:complexType>
 
@@ -110,6 +164,76 @@
             <xs:maxLength value="255"/>
         </xs:restriction>
     </xs:simpleType>
+
+
+    <xs:simpleType name="processing_level">
+        <xs:annotation>
+            <xs:documentation>The processing_level attribute provides a broad
+                classification of data processing level.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="pds:ASCII_Short_String_Collapsed">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="255"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+
+    <xs:simpleType name="wavelength_range">
+        <xs:annotation>
+            <xs:documentation>The wavelength range attribute specifies the
+                wavelength range over which the data were collected or which
+                otherwise characterizes the observation(s). Boundaries are
+                vague, and there is overlap.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="pds:ASCII_Short_String_Collapsed">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="255"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+
+    <xs:simpleType name="domain">
+        <xs:annotation>
+            <xs:documentation>The radial "zone" or "shell" of the target for
+                which the observations were collected or which are represented
+                in the product(s).  The value may depend on wavelength_range and
+                size of the target.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="pds:ASCII_Short_String_Collapsed">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="255"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+
+    <xs:simpleType name="lid_reference">
+        <xs:annotation>
+            <xs:documentation>The lid_reference attribute provides the logical_identifier for a  product.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="pds:ASCII_LID">
+            <!-- format="urn:nasa:pds:xxxx" -->
+            <xs:minLength value="14"/>
+            <xs:maxLength value="255"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+
+    <xs:simpleType name="reference_type">
+        <xs:annotation>
+            <xs:documentation>The reference_type attribute provides the name
+                of the association.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="pds:ASCII_Short_String_Collapsed">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="255"/>
+        </xs:restriction>
+    </xs:simpleType>
+
     <xs:simpleType name="ASCII_Short_String_Collapsed">
         <xs:restriction base="xs:token">
             <xs:minLength value="1"/>
@@ -117,4 +241,13 @@
             <xs:pattern value="\p{IsBasicLatin}*"/>
         </xs:restriction>
     </xs:simpleType>
+
+    <xs:simpleType name="ASCII_LID">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="14"/>
+            <xs:maxLength value="255"/>
+            <xs:pattern value="\p{IsBasicLatin}*"/>
+        </xs:restriction>
+    </xs:simpleType>
+
 </xs:schema>
