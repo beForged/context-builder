@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 
-<xs:schema targetNamespace="https://pds.nasa.gov/pds4/pds/v1">
+<xs:schema targetNamespace="https://pds.nasa.gov/pds4/pds/v1" >
     <xs:complexType name="Context_Area">
         <xs:annotation>
             <xs:documentation>
@@ -14,8 +14,8 @@
             <xs:element name="Investigation_Area" type="pds:Investigation_Area" minOccurs="0" maxOccurs="unbounded"> </xs:element>
             <xs:element name="Observing_System" type="pds:Observing_System" minOccurs="0" maxOccurs="unbounded"> </xs:element>
             <xs:element name="Target_Identification" type="pds:Target_Identification" minOccurs="0" maxOccurs="unbounded"> </xs:element>
-            <xs:element name="Mission_Area" type="pds:Mission_Area" minOccurs="0" maxOccurs="1"> </xs:element>
-            <xs:element name="Discipline_Area" type="pds:Discipline_Area" minOccurs="0" maxOccurs="1"> </xs:element>
+            <!--<xs:element name="Mission_Area" type="pds:Mission_Area" minOccurs="0" maxOccurs="1"> </xs:element>
+            <xs:element name="Discipline_Area" type="pds:Discipline_Area" minOccurs="0" maxOccurs="1"> </xs:element>-->
         </xs:sequence>
     </xs:complexType>
 
@@ -113,6 +113,39 @@
         </xs:sequence>
     </xs:complexType>
 
+    <xs:complexType name="Observing_System">
+        <xs:annotation>
+            <xs:documentation>The Observing System class describes the entire
+                suite used to collect the data.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="name" type="pds:name" minOccurs="0" maxOccurs="1"> </xs:element>
+            <xs:element name="Observing_System_Component" type="pds:Observing_System_Component" minOccurs="1" maxOccurs="unbounded"> </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+
+
+    <xs:complexType name="Observing_System_Component">
+        <xs:annotation>
+            <xs:documentation>The Observing System Component class references
+                one or more subsystems used to collect data. A subsystem can be
+                an instrument_host, instrument, or any other similar product.
+                Each subsystem is categorized as either a sensor or a source. If
+                the observing system includes both a sensor and a source,
+                Observing System Component occurs twice (once for each type)
+                otherwise it only occurs once.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="name" type="pds:name" minOccurs="1" maxOccurs="1"> </xs:element>
+            <xs:element name="type" type="pds:type" minOccurs="1" maxOccurs="1"> </xs:element>
+            <xs:element ref="pds:Internal_Reference" minOccurs="0" maxOccurs="1"> </xs:element>
+            <xs:element ref="pds:External_Reference" minOccurs="0" maxOccurs="unbounded"> </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
 
     <xs:complexType name="Internal_Reference">
         <xs:annotation>
@@ -129,6 +162,36 @@
         </xs:sequence>
     </xs:complexType>
 
+    <!--TODO-->
+
+    <xs:complexType name="External_Reference">
+        <xs:annotation>
+            <xs:documentation>The External_Reference class is used to
+                reference a source outside the PDS registry
+                system.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence> 
+            <xs:element name="doi" type="pds:doi" minOccurs="0" maxOccurs="1"> </xs:element> 
+            <xs:element name="reference_text" type="pds:reference_text" minOccurs="1" maxOccurs="1"> </xs:element> 
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:complexType name="Target_Identification">
+        <xs:annotation>
+            <xs:documentation>The Target_Identification class provides
+                detailed target identification information.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="name" type="pds:name" minOccurs="1" maxOccurs="1"> </xs:element>
+            <xs:element name="alternate_designation" type="pds:alternate_designation" minOccurs="0" maxOccurs="unbounded"> </xs:element>
+            <xs:element name="type" type="pds:type" minOccurs="1" maxOccurs="unbounded"> </xs:element>
+            <xs:element ref="pds:Internal_Reference" minOccurs="0" maxOccurs="1"> </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
     <xs:simpleType name="ASCII_Date_Time_YMD_UTC">
         <xs:restriction base="xs:string">
             <xs:pattern value="(-)?[0-9]{4}(Z)"/>
@@ -139,6 +202,21 @@
             <xs:pattern value="(-)?[0-9]{4}-((0[1-9])|(1[0-2]))-((0[1-9])|([1-2][0-9])|(3[0-1]))(T)24((:00)|(:00:00))?(Z)"/>
             <xs:pattern value="(-)?[0-9]{4}-((0[1-9])|(1[0-2]))-((0[1-9])|([1-2][0-9])|(3[0-1]))(T)24:00:00(\.([0]{1,4}))(Z)"/>
             <xs:pattern value="(-)?[0-9]{4}-((0[1-9])|(1[0-2]))-((0[1-9])|([1-2][0-9])|(3[0-1]))(Z)"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+
+
+    <xs:simpleType name="name">
+        <xs:annotation>
+            <xs:documentation>The name attribute provides a word or
+                combination of words by which the Agency is
+                known.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="pds:UTF8_Short_String_Collapsed">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="255"/>
         </xs:restriction>
     </xs:simpleType>
 
@@ -232,6 +310,44 @@
             <xs:minLength value="1"/>
             <xs:maxLength value="255"/>
         </xs:restriction>
+    </xs:simpleType>
+
+
+    <xs:simpleType name="doi">
+        <xs:annotation>
+            <xs:documentation>The doi attribute provides the Digital Object
+                Identifier for an object, assigned by the appropriate DOI System
+                Registration Agency.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="pds:ASCII_Short_String_Collapsed">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="255"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+
+    <xs:simpleType name="reference_text">
+        <xs:annotation>
+            <xs:documentation>The reference_text attribute provides a complete
+                bibliographic citation for a published work.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="pds:ASCII_Text_Preserved">
+            <xs:minLength value="1"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="alternate_designation">
+        <xs:annotation>
+            <xs:documentation>
+                The alternate_designation attribute provides aliases.
+            </xs:documentation>
+        </xs:annotation>
+            <xs:restriction base="pds:ASCII_Short_String_Collapsed">
+                <xs:minLength value="1"/>
+                <xs:maxLength value="255"/>
+            </xs:restriction>
     </xs:simpleType>
 
     <xs:simpleType name="ASCII_Short_String_Collapsed">
