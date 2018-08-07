@@ -11,10 +11,11 @@ with open(filename_xsd, 'r') as schema_file:
     schema_to_check = schema_file.read()
 
 # open and read xml file
-with open(filename_xml, 'r') as xml_file:
+with open(filename_xml, 'r', encoding='utf-8') as xml_file:
     xml_to_check = xml_file.read()
 
-xmlschema_doc = etree.parse(StringIO(schema_to_check))
+#parser = etree.XMLParser(encoding='utf-8')
+xmlschema_doc = etree.parse(StringIO(schema_to_check), parser)
 xmlschema = etree.XMLSchema(xmlschema_doc)
 
 # parse xml
