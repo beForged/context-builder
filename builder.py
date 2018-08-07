@@ -86,12 +86,12 @@ def time():
     #missing time HH:MM:SSSS
     date = datetime(year, month, day)
     delta = timedelta(seconds = random.randint(200, 86399))
-    start = date + delta
-    end = start + timedelta(seconds = random.randint(200, 50000))
+    start = date + abs(delta)
+    end = start + abs(timedelta(seconds = random.randint(200, 50000)))
     return timeret(start) + " " + timeret(end)
 
 def timeret(date):
-    ret = date.strftime("%Y-%m-%dT%H:%M:%sZ")
+    ret = date.strftime("%Y-%m-%dT%H:%M:%SZ")
     return ret
     
     
@@ -99,8 +99,7 @@ def timeret(date):
 #this is probably a useless function, but the list of items are left here for future reference
 def primary_results(facets):
     purposes = ['Calibration', 'Checkout', 'Engineering', 'Navigation', 'Observation Geometry', 'Science']
-    processing_level = ['Calibrated', 'Derived', 'Partially Processed', 
-        'Raw', 'Telemetry']
+    processing_level = ['Calibrated', 'Derived', 'Partially Processed', 'Raw', 'Telemetry']
     #facets ~
     subs = []
     PrimRes = 'Primary_Result_Summary'
