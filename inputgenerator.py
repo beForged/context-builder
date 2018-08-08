@@ -35,13 +35,18 @@ def generate_facet():
     return facet
 
 #returns a string with refernce types, depending on what category it goes in.
-def reftype(sec):
-    obsref= ["is_airborne", "is_facility", "is_instrument", "is_instrument_host", "is_other", "is_telescope"]
+#let t be a number which corresponds to the index of the array
+def reftype(sec, t):
     investref = ["bundle_to_investigation", "collection_to_investigation", "document_to_investigation", "data_to_investigation"]
+    obsref= ["is_airborne", "is_facility", "is_instrument", "is_instrument_host", "is_other", "is_telescope"]
     if sec == 1:
-        return "reference_type " + random.choice(investref)
+        if t > 3 or t < 0:
+            raise ValueError("bad number given")  
+        return "reference_type " + investref[t]
     else:
-        return " reference_type " + random.choice(obsref)
+        if t > 5 or t < 0:
+            raise ValueError("bad number given")
+        return " reference_type " + obsref[t]
 
 #should actually generate a lid reference sometime TODO i guess
 def lidgen(where, what):
@@ -98,10 +103,10 @@ def commandline(filename, num, name, observers, targets):
     f.write("name " + name + str(num)+ "\n")
     f.write(typegen(1) + "\n") 
     f.write("lid_reference "+ lidgen("sbn", "sample" + str(num)) + "\n")
-    f.write(reftype(1) + "\n")
+    f.write(reftype(1, random.randint(0,3)) + "\n")
     #some number of observers to be made, 
     for x in range(0,observers):
-        f.write("Observing_System_Components name spaceship" + str(x) + typegen(2) +" lid_reference " + lidgen("context", "observing") +  reftype(2) + "\n")
+        f.write("Observing_System_Components name spaceship" + str(x) + typegen(2) +" lid_reference " + lidgen("context", "observing") +  reftype(2, random.randint(0,3)) + "\n")
         #some number of targets
     for x in range(1,targets):
         f.write("Target_Identification name randomname" + str(x) + typegen(3) + "\n")
