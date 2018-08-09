@@ -19,19 +19,30 @@ def fileinp():
 
     
     #returns a string with wavelength and discipline name fascets, could be expanded easily
-def generate_facet():
+    #0-5, 0-2, 0-1, 0-4
+def generate_facet(wave, disc, facet1, option):
+    if (wave > 5 or disc > 2 or facet1 > 1):
+        raise ValueError 
+    if wave < 0 or disc < 0 or facet1 < 0 or option < 0:
+        raise ValueError
     wavelength = ['Infrared', 'Microwave', 'Millimeter', 'Near Infrared', 'Radio', 'Submillimeter']
     disc_name = ['Imaging', 'fields', 'Small Bodies']
-    disc = random.choice(disc_name)
-    facet = "wavelength_range " + random.choice(wavelength) + ", dicipline_name " + disc
-    if random.uniform(0,1) == 1:
+    imaging = ["Greyscale", "Color", "Movie", "Color Movie"]
+    fields = ["Electric", "Magnetic"]
+    section = ["Lightcurve", "Meteorics", "Physical Properties", "Taxonomy", "Historical Reference"]
+
+    disc = disc_name[disc]
+    facet = "wavelength_range " + wavelength[wave] + ", discipline_name " + disc
+    if facet1 == 1:
         facet = facet + ", facet1 "  
         if disc == 'Imaging':
-            facet = facet + random.choice(["Greyscale", "Color", "Movie", "Color Movie"])
+            facet = facet + imaging[option % 4]
         elif disc == 'fields':
-            facet = facet + random.choice(["Electric", "Magnetic"])
+            facet = facet + fields[option % 2]
         else:
-            facet = facet + random.choice(["Lightcurve", "Meteorics", "Physical Properties", "Taxonomy", "Historical Reference"])
+            if option > 4: 
+                raise ValueError 
+            facet = facet + section[option]
     return facet
 
 #returns a string with refernce types, depending on what category it goes in.
@@ -55,29 +66,33 @@ def lidgen(where, what):
 
 
 #generates a prupose string
-def purpose():
+def purpose(t):
+    if t < 0:
+        raise ValueError
     perp = ["Navigation", "Science", "Calibration"]
-    return "purpose " + random.choice(perp)
+    return "purpose " + perp[t%3]
 
 #processing level string generation
-def processinglvl():
+def processinglvl(t):
+    if t < 0:
+        raise ValueError
     lvls = ["Calibrated", "Derived", "Partially Processed", "Raw", "Telemetry"]
-    return "processing_level " + random.choice(lvls)
+    return "processing_level " + lvls[t%5]
 
 #there are 3 different categories  for type, so this will return something for each
 #one of them will randomly return 2 different types, although it needs to be modified so it doesnt repeat
-def typegen(sec):
+def typegen(sec, t):
     invest = ["Individual Investigation", "Mission", "Observing Campaign", "Other Investigation"]
     obs = ["Asteroid",  "Comet", "Dust", "Dwarf Planet", "Meteorite", "Meteroid", "Satellite"]
     obssys = ["Airborne", "Aircraft", "Balloon", "Facility", "Instrument", "Laboratory", "Observatory", "Spacecraft", "Telescope"]
     if sec == 1:
-        return "type " + random.choice(invest)
+        return "type " + invest[t%4]
     elif sec == 2:
-        return " type " + random.choice(obssys)
+        return " type " + obssys[t%7]
     else:
-        string = " type " + random.choice(obs) 
-        if random.uniform(0,1) == 1:
-            string + random.choice(obs)
+        string = " type " + obs[t%9]
+        if t%2== 1:
+            string + obs[(t + 1) % 9]
         return string
 
 
@@ -99,7 +114,8 @@ def commandline(filename, num, name, observers, targets):
     f.write("time " + time() + "\n")
     f.write(purpose() + "\n")
     f.write(processinglvl() + "\n")
-    f.write("science_facets " + generate_facet() + "\n")
+    #5,2,1,4
+    f.write("science_facets " + generate_facet(random.randint(0,5), random.randint(0,2), random.randint(0,1), random.randint(0,4)) + "\n")
     f.write("name " + name + str(num)+ "\n")
     f.write(typegen(1) + "\n") 
     f.write("lid_reference "+ lidgen("sbn", "sample" + str(num)) + "\n")
@@ -127,7 +143,7 @@ def filewriter(filename, num):
     f.write("time " + time() + "\n")
     f.write(purpose() + "\n")
     f.write(processinglvl() + "\n")
-    f.write("science_facets " + generate_facet() + "\n")
+    f.write("science_facets " + generate_facet(random.randint(0,5), random.randint(0,2), random.randint(0,1), random.randint(0,4)) + "\n")
     f.write("name spaceship" + str(num)+ "\n")
     f.write(typegen(1) + "\n") #choose from a list? input would be good here
     f.write("lid_reference "+ lidgen("sbn", "sample" + str(num)) + str(num)+ "\n")
