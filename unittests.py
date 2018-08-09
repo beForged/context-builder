@@ -1,25 +1,17 @@
 import unittest
 from inputgenerator import generate_facet
 import re
-from lxml import etree
-from IO import stringIO
 
 class TestGenerator(unittest.TestCase):
-    def validate(filename):
-        with open("tester.xsd", 'r') as schema_file:
-            schema_to_check = schema_file.read()
-        with open(filename, 'r') as xml_file:
-            xml_to_check = xml_file.read()
+    def test_facet(self):
+        string = generate_facet()
+        comp   = re.compile('wavelength_range .*, dicipline_name (.*),?.*')
+        self.assertTrue(re.match(comp, string) )
 
-        xmlschema_doc = etree.parse(StringIO(schema_to_check))
-        xmlschema = etree.XMLSchema(xmlschema_doc)
-
-        try:
-            doc = etree.parse(StringIO(xml_to_check))
-            print("xml well formed")
-        except IOError:
-            print("invalid")
-
+    def test_ref(self):
+        invest = reftype(1)
+        obs = reftype(2)
+        comp = re.compile('reference_type ')
 
 if __name__ == '__main__':
     unittest.main()
