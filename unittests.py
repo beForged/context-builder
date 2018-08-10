@@ -4,13 +4,14 @@ from inputgenerator import *
 import re
 
 class TestGenerator(unittest.TestCase):
+
     def test_facet(self):
         string = generate_facet(0,0,0,0)
-        self.assertEqual(string, "wavelength_range Infrared, discipline_name Imaging" )
+        self.assertEqual(string, "science_facets wavelength_range Infrared, discipline_name Imaging" )
         string = generate_facet(3, 1, 1, 3)
-        self.assertEqual(string, "wavelength_range Near Infrared, discipline_name fields, facet1 Magnetic")
+        self.assertEqual(string, "science_facets wavelength_range Near Infrared, discipline_name fields, facet1 Magnetic")
         string = generate_facet(5, 2, 1, 4)
-        self.assertEqual(string, "wavelength_range Submillimeter, discipline_name Small Bodies, facet1 Historical Reference")
+        self.assertEqual(string, "science_facets wavelength_range Submillimeter, discipline_name Small Bodies, facet1 Historical Reference")
         self.assertRaises(ValueError, generate_facet, 13, 123,124,2)
         
 
@@ -23,7 +24,7 @@ class TestGenerator(unittest.TestCase):
 
     def test_lid(self):
         lid = lidgen("abcdef", "ghijk")
-        self.assertEqual(lid, "urn:nasa:pds:abcdef:ghijk:sample")
+        self.assertEqual(lid, "lid_reference urn:nasa:pds:abcdef:ghijk:sample")
 
     def test_purpose(self):
         string = purpose(2)
@@ -44,11 +45,26 @@ class TestGenerator(unittest.TestCase):
         string = typegen(1, 3)
         self.assertEqual(string, "type Other Investigation")
         string = typegen(2, 8)
-        self.assertEqual(string, " type Aircraft")
+        self.assertEqual(string, " type Telescope")
         string = typegen(3, 3)
-        self.assertEqual(string, " type Facility Instrument")
-        string = typegen(3, 3)
-        self.assertEqual(string, " type Observatory")
+        self.assertEqual(string, " type Dwarf Planet Meteorite")
+        string = typegen(3, 6)
+        self.assertEqual(string, " type Satellite")
+
+    def test_name(self):
+        self.assertEqual(namegen("abcd", 4), "name abcd4")
+
+    def test_ret(self):
+        self.assertEqual(addret("test"), "test\n")
+
+    def test_obs(self):
+        string = obs("spaceship", 4, 2, 2)
+        self.assertEqual(string, "Observing_System_Components name spaceship4 type Balloon lid_reference urn:nasa:pds:context:observing:sample reference_type is_instrument")
+
+    def test_target(self):
+        string = target("sample_name", 7, 3)
+        comp = "Target_Identification name sample_name7 type Telescope"
+
 
 if __name__ == '__main__':
     unittest.main()

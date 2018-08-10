@@ -1,5 +1,6 @@
 from lxml import etree
 from io import StringIO
+from lxml.etree import fromstring
 import sys
 
 filename_xml = sys.argv[1]
@@ -7,15 +8,15 @@ filename_xsd = sys.argv[2]
 
 
 # open and read schema file
-with open(filename_xsd, 'r') as schema_file:
+with open(filename_xsd, 'rb') as schema_file:
     schema_to_check = schema_file.read()
 
 # open and read xml file
 with open(filename_xml, 'r', encoding='utf-8') as xml_file:
     xml_to_check = xml_file.read()
 
-#parser = etree.XMLParser(encoding='utf-8')
-xmlschema_doc = etree.parse(StringIO(schema_to_check), parser)
+#parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
+xmlschema_doc = etree.parse(StringIO(schema_to_check))
 xmlschema = etree.XMLSchema(xmlschema_doc)
 
 # parse xml

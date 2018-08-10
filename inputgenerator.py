@@ -32,7 +32,7 @@ def generate_facet(wave, disc, facet1, option):
     section = ["Lightcurve", "Meteorics", "Physical Properties", "Taxonomy", "Historical Reference"]
 
     disc = disc_name[disc]
-    facet = "wavelength_range " + wavelength[wave] + ", discipline_name " + disc
+    facet = "science_facets wavelength_range " + wavelength[wave] + ", discipline_name " + disc
     if facet1 == 1:
         facet = facet + ", facet1 "  
         if disc == 'Imaging':
@@ -43,7 +43,7 @@ def generate_facet(wave, disc, facet1, option):
             if option > 4: 
                 raise ValueError 
             facet = facet + section[option]
-    return facet
+    return facet 
 
 #returns a string with refernce types, depending on what category it goes in.
 #let t be a number which corresponds to the index of the array
@@ -57,11 +57,11 @@ def reftype(sec, t):
     else:
         if t > 5 or t < 0:
             raise ValueError("bad number given")
-        return " reference_type " + obsref[t]
+        return " reference_type " + obsref[t] 
 
 #should actually generate a lid reference sometime TODO i guess
 def lidgen(where, what):
-    lid = "urn:nasa:pds:" + where + ":" + what +":sample"
+    lid = "lid_reference " + "urn:nasa:pds:" + where + ":" + what +":sample"
     return lid
 
 
@@ -77,7 +77,7 @@ def processinglvl(t):
     if t < 0:
         raise ValueError
     lvls = ["Calibrated", "Derived", "Partially Processed", "Raw", "Telemetry"]
-    return "processing_level " + lvls[t%5]
+    return "processing_level " + lvls[t%5] 
 
 #there are 3 different categories  for type, so this will return something for each
 #one of them will randomly return 2 different types, although it needs to be modified so it doesnt repeat
@@ -86,14 +86,33 @@ def typegen(sec, t):
     obs = ["Asteroid",  "Comet", "Dust", "Dwarf Planet", "Meteorite", "Meteroid", "Satellite"]
     obssys = ["Airborne", "Aircraft", "Balloon", "Facility", "Instrument", "Laboratory", "Observatory", "Spacecraft", "Telescope"]
     if sec == 1:
-        return "type " + invest[t%4]
+        return "type " + invest[t%4] 
     elif sec == 2:
-        return " type " + obssys[t%7]
+        return " type " + obssys[t%9]
     else:
-        string = " type " + obs[t%9]
-        if t%2== 1:
-            string + obs[(t + 1) % 9]
+        string = " type " + obs[t%7]
+        if (t%2)== 1:
+            string = string + " " + obs[(t + 1) % 7]
         return string
+
+def timegen():
+    string = "time" + time() 
+    return string 
+
+def namegen(name, num):
+    string = "name " + name + str(num) 
+    return string
+
+def addret(string):
+    return string + "\n"
+
+def obs(name, num, t, ref):
+    string = "Observing_System_Components name " + name + str(num) + typegen(2, t) + " " + lidgen("context", "observing") +  reftype(2, ref) 
+    return string
+
+def target(name, num, t):
+    string = "Target_Identification name " + name + str(num) + typegen(3, t)
+    return string
 
 
 #just a small function that will make filenames, and also make the loop that will generate files
@@ -111,21 +130,21 @@ def defaultgeneration(num, default, name, obs, targ): #number of files you want 
 #takes in a name, and some numbers to make a more specific input file
 def commandline(filename, num, name, observers, targets):
     f = open(filename, "w+")
-    f.write("time " + time() + "\n")
-    f.write(purpose() + "\n")
-    f.write(processinglvl() + "\n")
+    f.write(addret(timegen()))
+    f.write(addret(purpose(random.randint(0,3))))
+    f.write(addret(processinglvl(random.randint(0,5))))
     #5,2,1,4
-    f.write("science_facets " + generate_facet(random.randint(0,5), random.randint(0,2), random.randint(0,1), random.randint(0,4)) + "\n")
-    f.write("name " + name + str(num)+ "\n")
-    f.write(typegen(1) + "\n") 
-    f.write("lid_reference "+ lidgen("sbn", "sample" + str(num)) + "\n")
-    f.write(reftype(1, random.randint(0,3)) + "\n")
+    f.write(addret(generate_facet(random.randint(0,5), random.randint(0,2), random.randint(0,1), random.randint(0,4))))
+    f.write(addret(namegen(name, num)))
+    f.write(addret(typegen(1, randint(0,10))))
+    f.write(addret(lidgen("sbn", "sample" + str(num))))
+    f.write(addret(reftype(1, random.randint(0,3))))
     #some number of observers to be made, 
     for x in range(0,observers):
-        f.write("Observing_System_Components name spaceship" + str(x) + typegen(2) +" lid_reference " + lidgen("context", "observing") +  reftype(2, random.randint(0,3)) + "\n")
+        f.write(addret(obs("sample_obs_name", x, random.randint(0,10), random.randint(0,3))))
         #some number of targets
     for x in range(1,targets):
-        f.write("Target_Identification name randomname" + str(x) + typegen(3) + "\n")
+        f.write(addret(target("sample_name", x, random.randint(0,10))))
     f.close()
 
 
