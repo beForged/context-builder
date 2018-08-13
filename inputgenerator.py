@@ -7,7 +7,7 @@ from inputprocessor import *
 from builder import *
 
 
-
+#this is deprecated and unused for now
 def fileinp():
     filename = input("give a filename with seed values: ")
     names = [x.strip() for x in filename.split(',')]
@@ -60,6 +60,7 @@ def reftype(sec, t):
         return " reference_type " + obsref[t] 
 
 #should actually generate a lid reference sometime TODO i guess
+#now can take user input
 def lidgen(where, what):
     lid = "lid_reference " + "urn:nasa:pds:" + where + ":" + what +":sample"
     return lid
@@ -95,21 +96,26 @@ def typegen(sec, t):
             string = string + " " + obs[(t + 1) % 7]
         return string
 
+#generates time string
 def timegen():
     string = "time " + time() 
     return string 
 
+#generates a name string
 def namegen(name, num):
     string = "name " + name + str(num) 
     return string
 
+#adds a \n to the end of the string
 def addret(string):
     return string + "\n"
 
+#generates a observing system component string
 def obs(name, num, t, ref):
     string = "Observing_System_Components name " + name + str(num) + typegen(2, t) + " " + lidgen("context", "observing") +  reftype(2, ref) 
     return string
 
+#generates a target identification string
 def target(name, num, t):
     string = "Target_Identification name " + name + str(num) + typegen(3, t)
     return string
@@ -119,7 +125,7 @@ def target(name, num, t):
 def defaultgeneration(num, default, name, obs, targ): #number of files you want to generate
     arr = []
     for x in range(0, num):
-        filename = "generated-input" + str(x)
+        filename = "generated-input" + str(x + 1)
         arr.append(filename)
         if default == 1:
             filewriter(filename, x)
@@ -128,6 +134,8 @@ def defaultgeneration(num, default, name, obs, targ): #number of files you want 
     testinput(arr)
 
 #takes in a name, and some numbers to make a more specific input file
+#random generation of numbers here to just randomly make appropriate strings,
+#consideration for non random generation(user prompted) but too long maybe?
 def commandline(filename, num, name, observers, targets):
     f = open(filename, "w+")
     f.write(addret(timegen()))
@@ -140,7 +148,7 @@ def commandline(filename, num, name, observers, targets):
     f.write(addret(lidgen("sbn", "sample" + str(num))))
     f.write(addret(reftype(1, random.randint(0,3))))
     #some number of observers to be made, 
-    for x in range(0,observers):
+    for x in range(1,observers):
         f.write(addret(obs("sample_obs_name", x, random.randint(0,10), random.randint(0,3))))
         #some number of targets
     for x in range(1,targets):
@@ -156,6 +164,7 @@ def cmdline(num):
     defaultgeneration(num,2, name, observers, targets)
 
 #default input files.
+#this makes a random input file to be turned into a  xml fragment 
 def filewriter(filename, num):
     f = open(filename, "w+")
     f.write(addret(timegen()))

@@ -10,6 +10,6 @@ type [insert here]
 lid_reference [insert here]
 reference_types [insert here]
 Observing_System_Components name [insert here] type [insert here] lid_reference [insert here] reference_type [insert here]
-#insert as many as desired
+#you may have as many observing systems as desired
 Target_Identification name [insert here] type [insert here]
-#insert as many as desired
+#you may have as many targets as desired
