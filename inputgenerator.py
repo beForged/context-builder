@@ -96,7 +96,7 @@ def typegen(sec, t):
         return string
 
 def timegen():
-    string = "time" + time() 
+    string = "time " + time() 
     return string 
 
 def namegen(name, num):
@@ -136,7 +136,7 @@ def commandline(filename, num, name, observers, targets):
     #5,2,1,4
     f.write(addret(generate_facet(random.randint(0,5), random.randint(0,2), random.randint(0,1), random.randint(0,4))))
     f.write(addret(namegen(name, num)))
-    f.write(addret(typegen(1, randint(0,10))))
+    f.write(addret(typegen(1, random.randint(0,10))))
     f.write(addret(lidgen("sbn", "sample" + str(num))))
     f.write(addret(reftype(1, random.randint(0,3))))
     #some number of observers to be made, 
@@ -144,7 +144,7 @@ def commandline(filename, num, name, observers, targets):
         f.write(addret(obs("sample_obs_name", x, random.randint(0,10), random.randint(0,3))))
         #some number of targets
     for x in range(1,targets):
-        f.write(addret(target("sample_name", x, random.randint(0,10))))
+        f.write(addret(target("sample_target_name", x, random.randint(0,10))))
     f.close()
 
 
@@ -155,22 +155,21 @@ def cmdline(num):
     targets = int(input("set a number of targets: "))
     defaultgeneration(num,2, name, observers, targets)
 
-#this is just like, make something that we build off of
 #default input files.
 def filewriter(filename, num):
     f = open(filename, "w+")
-    f.write("time " + time() + "\n")
-    f.write(purpose() + "\n")
-    f.write(processinglvl() + "\n")
-    f.write("science_facets " + generate_facet(random.randint(0,5), random.randint(0,2), random.randint(0,1), random.randint(0,4)) + "\n")
-    f.write("name spaceship" + str(num)+ "\n")
-    f.write(typegen(1) + "\n") #choose from a list? input would be good here
-    f.write("lid_reference "+ lidgen("sbn", "sample" + str(num)) + str(num)+ "\n")
-    f.write(reftype(1) + "\n")
+    f.write(addret(timegen()))
+    f.write(addret(purpose(random.randint(0,3))))
+    f.write(addret(processinglvl(random.randint(0,5))))
+    f.write(addret(generate_facet(random.randint(0,5), random.randint(0,2), random.randint(0,1), random.randint(0,4))))
+    f.write(addret(namegen("spaceship", num)))
+    f.write(addret(typegen(1, random.randint(0,10))))
+    f.write(addret(lidgen("sbn", "sample" + str(num))))
+    f.write(addret(reftype(1, random.randint(0,3))))
     for x in range(0,((num % 3) + 1)):
-        f.write("Observing_System_Components name spaceship" + str(x) + typegen(2) +" lid_reference " + lidgen("context", "observing") +  reftype(2) + "\n")
+        f.write(addret(obs("sample_obs_name", x, random.randint(0,10), random.randint(0,3))))
     for x in range(1,3):
-        f.write("Target_Identification name randomname" + str(x) +  typegen(3) + "\n")
+        f.write(addret(target("sample_target_name", x, random.randint(0,10))))
     f.close()
 
 #''main' function, will run this if you run 'python inputgenerator.py'
