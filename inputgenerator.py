@@ -74,6 +74,8 @@ def purpose(t):
     return "purpose " + perp[t%3]
 
 #processing level string generation
+#given the number t, it takes what number t is from the list, t is the index.
+#to prevent against 
 def processinglvl(t):
     if t < 0:
         raise ValueError
@@ -83,6 +85,8 @@ def processinglvl(t):
 #there are 3 different categories  for type, so this will return something for each
 #one of them will randomly return 2 different types, although it needs to be modified so it doesnt repeat
 def typegen(sec, t):
+    if t < 0:
+        raise ValueError
     invest = ["Individual Investigation", "Mission", "Observing Campaign", "Other Investigation"]
     obs = ["Asteroid",  "Comet", "Dust", "Dwarf Planet", "Meteorite", "Meteroid", "Satellite"]
     obssys = ["Airborne", "Aircraft", "Balloon", "Facility", "Instrument", "Laboratory", "Observatory", "Spacecraft", "Telescope"]
