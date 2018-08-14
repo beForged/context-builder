@@ -14,6 +14,18 @@ def getele(elems, string):
     else:
         return None
 
+
+def timematch(start, end):
+    time = [(make_ele(start, "start_date_time", None)),make_ele(end, "stop_date_time", None)]
+    return time
+
+#def timematch2(arr):
+#    for line in arr:
+#        m = re.match ('^time (.*) (.*)',line, re.IGNORECASE)
+#        if m:
+#            time = [(make_ele(m.group(1), "start_date_time", None)),make_ele(m.group(2), "stop_date_time", None)]
+
+
 def process(arr_line):
     #this is what we return in the end, it is a list of elems as defined in the builder class
     elems = []
@@ -26,9 +38,11 @@ def process(arr_line):
     for line in arr_line:
         line.rstrip()
         
+        #comments
         m = re.match ('^#.*', line)
         if m:
             pass
+            continue
 
 #########################
 #time math
@@ -37,8 +51,9 @@ def process(arr_line):
         #remember group 0 is entire matched group 1 is first group
         m = re.match ('^time (.*) (.*)',line, re.IGNORECASE)
         if m: 
-            time = [(make_ele(m.group(1), "start_date_time", None)),make_ele(m.group(2), "stop_date_time", None)]
+            time = timematch(m.group(1), m.group(2))
             elems.append(make_ele("","Time_Coordinates", time))
+            continue
 
 ################################################
 #Primary Results Summary
@@ -47,6 +62,7 @@ def process(arr_line):
         if m:
             perp = make_ele(m.group(1), "Purpose", None)
             elems.append(make_ele("", "Primary_Result_Summary", perp))
+            continue
 
         m = re.match('^processing_level (.*)', line, re.IGNORECASE)
         if m:
@@ -54,6 +70,8 @@ def process(arr_line):
                 if ele.tag == "Primary_Result_Summary":
                     sub = [ele.ele,make_ele(m.group(1), "processing_level", None)]
                     ele.set_ele(sub)
+            continue
+
         m = re.match('science_facets (.*)', line, re.IGNORECASE)
         #facets will just be in a big line I guess
         if m: 
@@ -70,7 +88,7 @@ def process(arr_line):
                     sub = ele.ele
                     sub.append(make_ele("", "Science_Facets", fac))
                     ele.set_ele(sub)
-
+            continue
 
 
 
@@ -85,6 +103,7 @@ def process(arr_line):
             invest.append(make_ele(m.group(1), "name", None))
             inv = make_ele("", "Investigation_Area", invest)
             elems.append(inv)
+            continue
 
 
         m = re.match('^type (.*)', line, re.IGNORECASE)
@@ -92,6 +111,7 @@ def process(arr_line):
             for ele in elems:
                 if ele.tag == "Investigation_Area":
                     ele.ele.append(make_ele(m.group(1), "Type", None))
+            continue
 
         refs = []
         m = re.match ('^lid_reference (.*)', line, re.IGNORECASE)
@@ -99,6 +119,7 @@ def process(arr_line):
             refs.append(make_ele(m.group(1), "Lid_Reference", None))
             investigation = getele(elems, "Investigation_Area")
             investigation.ele.append(make_ele("", "Internal_Reference", refs))
+            continue
 
 
         m = re.match('^reference_types? (.*)', line, re.IGNORECASE)
@@ -106,6 +127,7 @@ def process(arr_line):
             investigation = getele(elems, "Investigation_Area")
             intref = getele(investigation.ele, "Internal_Reference")
             intref.ele.append(make_ele(m.group(1), "Reference_Types", None))
+            continue
 
 #############################
 #this is observing system components and target id which are fairly mature at this time
@@ -126,6 +148,7 @@ def process(arr_line):
             else:
                 obssys = getele(elems, "Observing_System")
                 obssys.ele.append(make_ele("","Observing_System_Components", obs_sys_comp))
+            continue
             #object?
 
 ####################
@@ -140,6 +163,14 @@ def process(arr_line):
             for x in types:
                 targ_id.append(make_ele(x, "Type", None))
             elems.append(make_ele("", "Target_Identification", targ_id))
+            continue
+
+        #this is a general case, where if there are 2 words it will add it to the end.
+        #this is not 
+#        m = re.match('(\w+) (\w+)', line, re.IGNORECASE)
+#        if m:
+#            gen = make_ele(m.group(1), m.group(2), None)
+#            elems.append(gen)
     return elems
 
 
