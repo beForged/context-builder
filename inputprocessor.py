@@ -19,6 +19,14 @@ def timematch(start, end):
     time = [(make_ele(start, "start_date_time", None)),make_ele(end, "stop_date_time", None)]
     return time
 
+def genericbuild(text, label):
+    arr = make_ele(text, label, None)
+    return arr
+    
+def genericaux(element, sub):
+    element.add_ele(sub)
+    
+
 #def timematch2(arr):
 #    for line in arr:
 #        m = re.match ('^time (.*) (.*)',line, re.IGNORECASE)
@@ -47,7 +55,6 @@ def process(arr_line):
 #########################
 #time math
 
-
         #remember group 0 is entire matched group 1 is first group
         m = re.match ('^time (.*) (.*)',line, re.IGNORECASE)
         if m: 
@@ -60,6 +67,7 @@ def process(arr_line):
 
         m = re.match('^(?:purpose) (.*)', line, re.IGNORECASE)
         if m:
+            #p = genericbuild(m.group(1), "Purpose")
             perp = make_ele(m.group(1), "Purpose", None)
             elems.append(make_ele("", "Primary_Result_Summary", perp))
             continue

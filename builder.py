@@ -25,6 +25,9 @@ class Ele:
     def set_ele(self, ele):
         self.ele = ele
 
+    def add_ele(self, elem):
+        self.ele.append(elem)
+
 #helper to make elements, can call this func
 #instead of doing whatever strange constructer python has
 #clarity sake
