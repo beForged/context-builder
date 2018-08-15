@@ -1,0 +1,47 @@
+time_coordinates
+;time 1956-12-24T00:10:41Z 
+;time 1956-12-24T05:25:04Z
+primary_results_summary 
+;purpose Calibration
+;processing_level Derived
+;science_facets wavelength_range Microwave, discipline_name Small Bodies, facet1 Lightcurve
+investigation_area
+;name spaceship0
+;type Other Investigation
+;internal_reference
+;;lid_reference urn:nasa:pds:sbn:sample0:sample
+;;reference_type collection_to_investigation
+observing_system
+;Observing_System_Components 
+;name sample_obs_name0 
+;type Spacecraft 
+;internal reference
+;;lid_reference urn:nasa:pds:context:observing:sample 
+;;reference_type is_airborne
+Target_Identification 
+;name sample_target_name1 
+;type Asteroid
+Target_Identification 
+;name sample_target_name2 
+;type Meteroid Satellite
+
+
+#count number of ;
+def generate():
+    if string.index(0) not == ';'
+    a = mak_ele(string, "", None)
+#go next line
+        if string.index(0) == ';'
+            split = string.split(' ')
+            b = make_ele(split[0], split[1], None)
+            a.add_ele(b)
+    generate()
+    
+    >consume a semicolon
+    
+def generate(element, string):
+    if string.index(0) == ';'
+        generate(element.sub, string[1:])
+    else:
+        split = string.split(' ')
+        element.add_ele(make_ele(split[0], split[1], None))

@@ -23,9 +23,13 @@ def genericbuild(text, label):
     arr = make_ele(text, label, None)
     return arr
     
-def genericaux(element, sub):
-    element.add_ele(sub)
-    
+#missing parent handling, when sub-element has more than one child
+def genericaux(element, sub, string, indent):
+    if indent:
+        genericaux(element, sub, string, indent-1)
+    else:
+        element.add_ele(make_ele(sub, string))
+
 
 #def timematch2(arr):
 #    for line in arr:
@@ -74,10 +78,11 @@ def process(arr_line):
 
         m = re.match('^processing_level (.*)', line, re.IGNORECASE)
         if m:
-            for ele in elems:
-                if ele.tag == "Primary_Result_Summary":
-                    sub = [ele.ele,make_ele(m.group(1), "processing_level", None)]
-                    ele.set_ele(sub)
+            if getele(elems, "Primary_Result_Summary") is None:
+                elems.append(make_ele("","Primary_Results_Summary"), None)
+            else:
+                sub = [ele.ele,make_ele(m.group(1), "processing_level", None)]
+                ele.set_ele(sub)
             continue
 
         m = re.match('science_facets (.*)', line, re.IGNORECASE)

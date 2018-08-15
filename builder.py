@@ -20,13 +20,17 @@ class Ele:
        else:
             self.ele = elem
        
-       #set the child elements, this rewrites, may want to add an append element
+       #set the child elements, this rewrites, 
        #function
     def set_ele(self, ele):
         self.ele = ele
 
+#appends elements, does not rewrite, but if it is none, then it will add one
     def add_ele(self, elem):
-        self.ele.append(elem)
+        if ele is None:
+            self.ele = elem
+        else:
+            self.ele.append(elem)
 
 #helper to make elements, can call this func
 #instead of doing whatever strange constructer python has
