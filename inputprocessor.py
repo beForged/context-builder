@@ -19,6 +19,16 @@ def timematch(start, end):
     time = [(make_ele(start, "start_date_time", None)),make_ele(end, "stop_date_time", None)]
     return time
 
+
+def facets(string):
+    fac = []
+    lst = [x.strip() for x in string.split(',')]
+    for each in lst:
+        r = re.match('([^\s]*) (.*)', each)
+        fac.append(make_ele(r.group(2), r.group(1), None))
+    return fac
+
+
 def genericbuild(text, label):
     arr = make_ele(text, label, None)
     return arr
@@ -73,36 +83,34 @@ def process(arr_line):
         if m:
             #p = genericbuild(m.group(1), "Purpose")
             perp = make_ele(m.group(1), "Purpose", None)
-            elems.append(make_ele("", "Primary_Result_Summary", perp))
+            if getele(elems, "Primary_Results_Summary") is None:
+                elems.append(make_ele("", "Primary_Results_Summary", perp))
+            else:
+                prim = getele(elems, "Primary_Results_Summary")
+                prim.add_ele(perp)
             continue
 
         m = re.match('^processing_level (.*)', line, re.IGNORECASE)
         if m:
-            if getele(elems, "Primary_Result_Summary") is None:
-                elems.append(make_ele("","Primary_Results_Summary"), None)
+            proc = make_ele(m.group(1), "Processing_level", None)
+            a = getele(elems, "Primary_Result_Summary") 
+            if a is None:
+                elems.append(make_ele("","Primary_Results_Summary", proc))
             else:
-                sub = [ele.ele,make_ele(m.group(1), "processing_level", None)]
-                ele.set_ele(sub)
+                a.add_ele(proc)
             continue
 
         m = re.match('science_facets (.*)', line, re.IGNORECASE)
         #facets will just be in a big line I guess
         if m: 
-            fac = []
             lst = m.group(1)
-            lst = [x.strip() for x in lst.split(',')]#should be in form tag text, ...
-            for each in lst:
-                #print(each)
-                r = re.match('([^\s]*) (.*)', each)
-                #print(r)
-                fac.append(make_ele(r.group(2), r.group(1), None))
-            for ele in elems:
-                if ele.tag == "Primary_Result_Summary":
-                    sub = ele.ele
-                    sub.append(make_ele("", "Science_Facets", fac))
-                    ele.set_ele(sub)
+            fac = facets(lst)
+            a = getele(elems, "Primary_Results_Summary")
+            if a is None:
+                elems.append(make_ele("","Primary_Results_Summary", fac))
+            else:
+                a.add_ele(fac)
             continue
-
 
 
 

@@ -27,10 +27,15 @@ class Ele:
 
 #appends elements, does not rewrite, but if it is none, then it will add one
     def add_ele(self, elem):
-        if ele is None:
+        if elem is None:
             self.ele = elem
         else:
-            self.ele.append(elem)
+            sub = self.ele
+            if isinstance(sub, list):
+                sub.append(elem)
+            else:
+                self.set_ele([sub, elem])
+            
 
 #helper to make elements, can call this func
 #instead of doing whatever strange constructer python has
