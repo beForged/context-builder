@@ -22,19 +22,23 @@ class Ele:
        
        #set the child elements, this rewrites, 
        #function
-    def set_ele(self, ele):
-        self.ele = ele
+    def clear_ele(self):
+        self.ele = None
 
 #appends elements, does not rewrite, but if it is none, then it will add one
     def add_ele(self, elem):
-        if elem is None:
-            self.ele = elem
+        if self.ele is None:
+            self.ele = [elem]
         else:
             sub = self.ele
+            if isinstance(sub, list) and isinstance(elem, list):
+                self.ele = sub + elem
             if isinstance(sub, list):
-                sub.append(elem)
+                self.ele.append(elem)
+            elif isinstance(elem, list):
+                self.ele = [sub] + elem
             else:
-                self.set_ele([sub, elem])
+                self.ele = [sub, elem]
             
 
 #helper to make elements, can call this func

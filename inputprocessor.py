@@ -87,7 +87,7 @@ def process(arr_line):
                 elems.append(make_ele("", "Primary_Results_Summary", perp))
             else:
                 prim = getele(elems, "Primary_Results_Summary")
-                prim.add_ele(perp)
+                prim.ele = perp
             continue
 
         m = re.match('^processing_level (.*)', line, re.IGNORECASE)
@@ -198,6 +198,11 @@ def process(arr_line):
 #print(process(parse_file("./inputs")))
 #print(parse_file("./inputs"))
 
+def printer(elems):
+       print(elems) 
+
+
+
 def testinput(arr):
     #want to take our input file and conver it useing builder.py into an xml file
     counter = 0
@@ -207,6 +212,7 @@ def testinput(arr):
         counter = counter + 1
         #process the files into element objects
         a = process(parse_file(filename))
+        print(a)
         #makes these element objects into python xml tree
         res = context_builder(a)
         #indent/format the tree
