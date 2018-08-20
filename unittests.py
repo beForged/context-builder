@@ -65,6 +65,36 @@ class TestGenerator(unittest.TestCase):
         string = target("sample_name", 7, 3)
         comp = "Target_Identification name sample_name7 type Telescope"
 
+class TestProcess(unittest.TestCase):
+    def test_elements1(self):
+        #make an element with a list of 2 subelements, using add element
+        a = make_ele("textone", "tagone", None)
+        sub = [make_ele("text2", "tag2", None), make_ele("text3", "tag3", None)]
+        self.assertTrue(isinstance(sub,list))
+        a.add_ele(sub)
+        self.assertEqual(a.text, "textone")
+        self.assertTrue(isinstance(a.ele, list))
+        one = a.ele[0].text
+        #print(a.ele)
+        self.assertEqual("text2", one)
+
+    def test_elements2(self):
+        #make an element with a list of 2 subelements, using add element
+        sub = [make_ele("text2", "tag2", None), make_ele("text3", "tag3", None)]
+        a = make_ele("textone", "tagone", sub)
+        #print(a.ele)
+        self.assertEqual(a.text, "textone")
+        self.assertTrue(isinstance(a.ele, list))
+        
+    def test_facet_sim(self):
+        lst = "abc def, ef shd"
+        fac = facets(lst)
+        elems = [make_ele("", "prim", None), make_ele("", "soimething else", None)]
+        a = getele(elems, "prim")
+        #a is not none
+        a.add_ele(fac)
+        one = a.ele[0].text
+        self.assertEqual(one, "def")
 
 if __name__ == '__main__':
     unittest.main()

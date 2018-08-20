@@ -25,10 +25,13 @@ class Ele:
     def clear_ele(self):
         self.ele = None
 
+    def set_ele(self, elem):
+        self.ele = elem
+
 #appends elements, does not rewrite, but if it is none, then it will add one
     def add_ele(self, elem):
         if self.ele is None:
-            self.ele = [elem]
+            self.ele = elem
         else:
             sub = self.ele
             if isinstance(sub, list) and isinstance(elem, list):

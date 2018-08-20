@@ -199,7 +199,12 @@ def process(arr_line):
 #print(parse_file("./inputs"))
 
 def printer(elems):
-       print(elems) 
+    if elems.text is not None and not isinstance(elems,list):
+       print(elems.tag) 
+    if isinstance(elems, list):
+       for e in elems:
+           printer(e.ele)
+
 
 
 
@@ -212,16 +217,16 @@ def testinput(arr):
         counter = counter + 1
         #process the files into element objects
         a = process(parse_file(filename))
-        print(a)
+        printer(a)
         #makes these element objects into python xml tree
-        res = context_builder(a)
+        #res = context_builder(a)
         #indent/format the tree
-        indent(res)
+        #indent(res)
         #transform it from a collection of elements into a tree
-        tree = ET.ElementTree(res)
+        #tree = ET.ElementTree(res)
         #and then writing the tree into a file 
-        output = "output" + str(counter) + ".xml"
-        tree.write(output)
+        #output = "output" + str(counter) + ".xml"
+        #tree.write(output)
 
 def getinput():
     var = input("enter the filenames, comma separated:")
