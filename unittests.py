@@ -92,9 +92,21 @@ class TestProcess(unittest.TestCase):
         elems = [make_ele("", "prim", None), make_ele("", "soimething else", None)]
         a = getele(elems, "prim")
         #a is not none
+        if a is not None:
+            elems.append
         a.add_ele(fac)
         one = a.ele[0].text
         self.assertEqual(one, "def")
+        tree = context_builder(elems)
+
+    def test_proc(self):
+        elems = [make_ele("", "prim", None), make_ele("", "soimething else", None)]
+        proc = make_ele("proc", "processing lvl", None)
+        a = getele(elems, "prim")
+        a.add_ele(proc)
+        print(elems[0].ele)
+        tree = context_builder(elems)
+
 
 if __name__ == '__main__':
     unittest.main()

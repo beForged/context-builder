@@ -81,8 +81,11 @@ def helper(root, element):
     if element.text is not None:
         sub.text = element.text
     if element.ele is not None:
-        for subele in element.ele:
-            helper(sub, subele)
+        if isinstance(element.ele, list):
+            for subele in element.ele:
+                helper(sub, subele)
+        else:
+            helper(sub, element.ele)
 
 #returns time element that consists of start and stop and sometimes the other two
 #~can maybe control after, and before, so far they are going to be random times
