@@ -20,10 +20,29 @@ class Ele:
        else:
             self.ele = elem
        
-       #set the child elements, this rewrites, may want to add an append element
+       #set the child elements, this rewrites, 
        #function
-    def set_ele(self, ele):
-        self.ele = ele
+    def clear_ele(self):
+        self.ele = None
+
+    def set_ele(self, elem):
+        self.ele = elem
+
+#appends elements, does not rewrite, but if it is none, then it will add one
+    def add_ele(self, elem):
+        if self.ele is None:
+            self.ele = elem
+        else:
+            sub = self.ele
+            if isinstance(sub, list) and isinstance(elem, list):
+                self.ele = sub + elem
+            elif isinstance(sub, list):
+                self.ele.append(elem)
+            elif isinstance(elem, list):
+                self.ele = elem.insert(0, sub)
+            else:
+                self.ele = [sub, elem]
+            
 
 #helper to make elements, can call this func
 #instead of doing whatever strange constructer python has
@@ -62,8 +81,11 @@ def helper(root, element):
     if element.text is not None:
         sub.text = element.text
     if element.ele is not None:
-        for subele in element.ele:
-            helper(sub, subele)
+        if isinstance(element.ele, list):
+            for subele in element.ele:
+                helper(sub, subele)
+        else:
+            helper(sub, element.ele)
 
 #returns time element that consists of start and stop and sometimes the other two
 #~can maybe control after, and before, so far they are going to be random times
