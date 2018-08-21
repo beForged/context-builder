@@ -104,7 +104,7 @@ class TestProcess(unittest.TestCase):
         proc = make_ele("proc", "processing lvl", None)
         a = getele(elems, "prim")
         a.add_ele(proc)
-        print(elems[0].ele)
+        #print(elems[0].ele)
         tree = context_builder(elems)
 
 

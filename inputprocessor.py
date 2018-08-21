@@ -87,13 +87,13 @@ def process(arr_line):
                 elems.append(make_ele("", "Primary_Results_Summary", perp))
             else:
                 prim = getele(elems, "Primary_Results_Summary")
-                prim.ele = perp
+                prim.add_ele(perp)
             continue
 
         m = re.match('^processing_level (.*)', line, re.IGNORECASE)
         if m:
             proc = make_ele(m.group(1), "Processing_level", None)
-            a = getele(elems, "Primary_Result_Summary") 
+            a = getele(elems, "Primary_Results_Summary") 
             if a is None:
                 elems.append(make_ele("","Primary_Results_Summary", proc))
             else:

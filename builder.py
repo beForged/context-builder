@@ -36,10 +36,10 @@ class Ele:
             sub = self.ele
             if isinstance(sub, list) and isinstance(elem, list):
                 self.ele = sub + elem
-            if isinstance(sub, list):
+            elif isinstance(sub, list):
                 self.ele.append(elem)
             elif isinstance(elem, list):
-                self.ele = [sub] + elem
+                self.ele = elem.insert(0, sub)
             else:
                 self.ele = [sub, elem]
             
