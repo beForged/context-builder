@@ -1,6 +1,7 @@
 import unittest
 from inputgenerator import generate_facet
 from inputgenerator import *
+from xml.etree import ElementTree
 import re
 
 class TestGenerator(unittest.TestCase):
@@ -107,6 +108,17 @@ class TestProcess(unittest.TestCase):
         #print(elems[0].ele)
         tree = context_builder(elems)
 
+    def test_fragment(self):
+        a = process(parse_file("testfilein"))
+        r = context_builder(a)
+        indent(r)
+        string = ElementTree.tostring(r).decode()
+
+        f = open("testfileout", "r")
+        res = f.read()
+        f.close()
+
+        self.assertEqual(res, string)
 
 if __name__ == '__main__':
     unittest.main()
