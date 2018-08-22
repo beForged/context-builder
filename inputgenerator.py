@@ -116,12 +116,18 @@ def addret(string):
 
 #generates a observing system component string
 def obs(name, num, t, ref):
-    string = "Observing_System_Components name " + name + str(num) + typegen(2, t) + " " + lidgen("context", "observing") +  reftype(2, ref) 
+    if num is None:
+        string = "Observing_System_Components name " + name + typegen(2, t) + " " + lidgen("context", "observing") +  reftype(2, ref) 
+    else:
+        string = "Observing_System_Components name " + name + str(num) + typegen(2, t) + " " + lidgen("context", "observing") +  reftype(2, ref) 
     return string
 
 #generates a target identification string
 def target(name, num, t):
-    string = "Target_Identification name " + name + str(num) + typegen(3, t)
+    if num is None:
+        string = "Target_Identification name " + name + typegen(3, t)
+    else:
+        string = "Target_Identification name " + name + str(num) + typegen(3, t)
     return string
 
 
@@ -133,9 +139,59 @@ def defaultgeneration(num, default, name, obs, targ): #number of files you want 
         arr.append(filename)
         if default == 1:
             filewriter(filename, x)
-        else:
+        elif default == 2:
             commandline(filename, x, name, obs, targ) 
+        elif default == 3:
+            specific(filename, x, name, obs, targ)
     testinput(arr)
+
+
+def specific(filename, num, name, observers, targets):
+    time = timegen()
+    purp= input("input purpose \n 1.Navigation \n2.Science\n3.Calibration\n") - 1
+    proc = input("input a processing level\n1.Calibrated\n2.Derived\n3.Partially Processed\n4.Raw\n5.Telemetry\n")
+    facbool = input("input number of facets, 0-3\n")
+    while(facbool > 0):
+        wavelength = input("input wavelength")##
+        if facbool == 1:
+            break
+        dicipline = input ("input discipline name")###
+        if facbool == 2:
+            break
+        facoptions = input("input facet numbers")####
+        break
+    type1 = input("input a type from the list")####
+    lid = input("enter 2 space separated words for the lid reference")
+    ref1 = input("input a number for reference type")###
+    obstype = []
+    obsref = []
+    obsname = []
+    for each in range(0,observers):
+        obsname.append(input("input a name"))
+        obstype.append(input("input a number for type"))##
+        obsref.append(input("input a number for reference"))##
+    targnames = []
+    targtypes = []
+    for each in range(0,targets):
+        targname.append(input("input target " + str(each) + " name"))
+        targtypes.append(input("input what types the target is"))###
+
+    f = open(filename, "w+")
+    f.write(addret(time))
+    f.write(addret(purpose(purp)))
+    f.write(addret(processinglvl(proc)))
+    f.write(addret())
+    f.write(addret(typegen(1, type1)))
+    lid = lid.split(" ")
+    f.write(addret(lidgen(lid[0], lid[1])))
+    f.write(addret(reftype(1, ref1)))
+    for x in range(0,observers):
+        f.write(addret(obs(obsname[x],None, obstype[x], obsref[x])))
+    for x in range(0, targets):
+        f.write(addret(target(targname[x], None, targtypes[x])))
+    f.close()
+
+
 
 #takes in a name, and some numbers to make a more specific input file
 #random generation of numbers here to just randomly make appropriate strings,
@@ -165,7 +221,11 @@ def cmdline(num):
     name = input("set a sample name: ")
     observers = int(input("set a number of observers: "))
     targets = int(input("set a number of targets: "))
-    defaultgeneration(num,2, name, observers, targets)
+    spec= input("would you like to enter all information manually y/n")
+    if spec== "y":
+        defaultgeneration(num, 3, name, observers, targets)
+    else:
+        defaultgeneration(num,2, name, observers, targets)
 
 #default input files.
 #this makes a random input file to be turned into a  xml fragment 
