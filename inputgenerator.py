@@ -21,17 +21,13 @@ def fileinp():
     #returns a string with wavelength and discipline name fascets, could be expanded easily
     #0-5, 0-2, 0-1, 0-4
 def generate_facet(wave, disc, facet1, option):
-    if (wave > 5 or disc > 2 or facet1 > 1):
-        raise ValueError 
-    if wave < 0 or disc < 0 or facet1 < 0 or option < 0:
-        raise ValueError
+    if wave == None:
+        return ""
     wavelength = ['Infrared', 'Microwave', 'Millimeter', 'Near Infrared', 'Radio', 'Submillimeter']
     disc_name = ['Imaging', 'fields', 'Small Bodies']
     imaging = ["Greyscale", "Color", "Movie", "Color Movie"]
     fields = ["Electric", "Magnetic"]
     section = ["Lightcurve", "Meteorics", "Physical Properties", "Taxonomy", "Historical Reference"]
-    if wave == None:
-        return ""
     
     facet = "science_facets wavelength_range " + wavelength[wave] 
     if disc == None:
@@ -153,7 +149,7 @@ def defaultgeneration(num, default, name, obs, targ): #number of files you want 
 
 def specific(filename, num, name, observers, targets):
     time = timegen()
-    purp= int(input("input purpose \n 1.Navigation \n2.Science\n3.Calibration\n")) - 1
+    purp= int(input("input purpose\n1.Navigation \n2.Science\n3.Calibration\n")) - 1
     proc = int(input("input a processing level\n1.Calibrated\n2.Derived\n3.Partially Processed\n4.Raw\n5.Telemetry\n")) - 1
     facbool = int(input("input number of facets, 0-3\n"))
     wavelength = None
@@ -180,13 +176,14 @@ def specific(filename, num, name, observers, targets):
     obsref = []
     obsname = []
     for each in range(0,observers):
-        obsname.append(input("input a name"))
+        obsname.append(input("input a name\n"))
         obstype.append(int(input("input a number for type\n1.Airborne\n2.Aircraft\n3.Balloon\n4.Facility\n5.Instrument\n6.Laboratory\n7.Observatory\n8.Spacecraft\n9.Telescope\n")) - 1)
         obsref.append(int(input("input a number for reference\n1.is_airborne\n2.is_facility\n3.is_instrument\n4.is_instrument_host\n5.is_other\n6.is_telescope\n")) - 1)##
-    targnames = []
+    targname = []
     targtypes = []
     for each in range(0,targets):
-        targname.append(input("input target " + str(each) + " name"))
+        string = "input target " + str(each) + " name\n"
+        targname.append(input(string))
         targtypes.append(int(input("input what types the target is\n1.Asteroid\n2.Comet\n3.Dust\n4.Dwarf Planet\n5.Meteorite\n6.Meteroid\n7.Satellite\n")) - 1)###
 
     f = open(filename, "w+")
