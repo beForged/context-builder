@@ -173,21 +173,21 @@ def specific(filename, num, name, observers, targets):
         if disc == 2:
             facoptions = int(input("input facet numbers\n1.Lightcurve\n2.Meteorics\n3.Physical Properties\n4.Taxonomy\n5.Historical Reference\n")) - 1
         break
-    type1 = input("input a type from the list")####
-    lid = input("enter 2 space separated words for the lid reference")
-    ref1 = input("input a number for reference type")###
+    type1 = int(input("input a type from the list\n1.Individual Investigation\n2.Mission\n3.Observing Campaign\n4.Other Investigations\n")) - 1
+    lid = input("enter 2 space separated words for the lid reference\n")
+    ref1 = int(input("input a number for reference type\n1.bundle_to_investigation\n2.collection_to_investigation\n3.document_to_investigation\n4.data_to_investigation\n")) - 1
     obstype = []
     obsref = []
     obsname = []
     for each in range(0,observers):
         obsname.append(input("input a name"))
-        obstype.append(input("input a number for type"))##
-        obsref.append(input("input a number for reference"))##
+        obstype.append(int(input("input a number for type\n1.Airborne\n2.Aircraft\n3.Balloon\n4.Facility\n5.Instrument\n6.Laboratory\n7.Observatory\n8.Spacecraft\n9.Telescope\n")) - 1)
+        obsref.append(int(input("input a number for reference\n1.is_airborne\n2.is_facility\n3.is_instrument\n4.is_instrument_host\n5.is_other\n6.is_telescope\n")) - 1)##
     targnames = []
     targtypes = []
     for each in range(0,targets):
         targname.append(input("input target " + str(each) + " name"))
-        targtypes.append(input("input what types the target is"))###
+        targtypes.append(int(input("input what types the target is\n1.Asteroid\n2.Comet\n3.Dust\n4.Dwarf Planet\n5.Meteorite\n6.Meteroid\n7.Satellite\n")) - 1)###
 
     f = open(filename, "w+")
     f.write(addret(time))
