@@ -30,9 +30,14 @@ def generate_facet(wave, disc, facet1, option):
     imaging = ["Greyscale", "Color", "Movie", "Color Movie"]
     fields = ["Electric", "Magnetic"]
     section = ["Lightcurve", "Meteorics", "Physical Properties", "Taxonomy", "Historical Reference"]
-
+    if wave == None:
+        return ""
+    
+    facet = "science_facets wavelength_range " + wavelength[wave] 
+    if disc == None:
+        return facet
     disc = disc_name[disc]
-    facet = "science_facets wavelength_range " + wavelength[wave] + ", discipline_name " + disc
+    facet = facet + ", discipline_name " + disc
     if facet1 == 1:
         facet = facet + ", facet1 "  
         if disc == 'Imaging':
@@ -148,17 +153,25 @@ def defaultgeneration(num, default, name, obs, targ): #number of files you want 
 
 def specific(filename, num, name, observers, targets):
     time = timegen()
-    purp= input("input purpose \n 1.Navigation \n2.Science\n3.Calibration\n") - 1
-    proc = input("input a processing level\n1.Calibrated\n2.Derived\n3.Partially Processed\n4.Raw\n5.Telemetry\n")
-    facbool = input("input number of facets, 0-3\n")
+    purp= int(input("input purpose \n 1.Navigation \n2.Science\n3.Calibration\n")) - 1
+    proc = int(input("input a processing level\n1.Calibrated\n2.Derived\n3.Partially Processed\n4.Raw\n5.Telemetry\n")) - 1
+    facbool = int(input("input number of facets, 0-3\n"))
+    wavelength = None
+    facoptions = None
+    disc = None
     while(facbool > 0):
-        wavelength = input("input wavelength")##
+        wavelength = int(input("input wavelength\n1.Infrared\n2.Microwave\n3.Millimeter\n4.Near Infrared\n5.Radio\n6.Submillimeter\n")) - 1
         if facbool == 1:
             break
-        dicipline = input ("input discipline name")###
+        disc = int(input ("input discipline name\n1.Imaging\n2.Fields\n3.Small Bodies\n")) - 1
         if facbool == 2:
             break
-        facoptions = input("input facet numbers")####
+        if disc == 0:
+            facoptions = int(input("input facet numbers\n1.Greyscale\n2.Color\n3.Movie\n4.Color Movie\n")) - 1
+        if disc == 1:
+            facoptions = int(input("input facet numbers\n1.Electric\n2.Magnetic\n")) - 1
+        if disc == 2:
+            facoptions = int(input("input facet numbers\n1.Lightcurve\n2.Meteorics\n3.Physical Properties\n4.Taxonomy\n5.Historical Reference\n")) - 1
         break
     type1 = input("input a type from the list")####
     lid = input("enter 2 space separated words for the lid reference")
@@ -180,7 +193,11 @@ def specific(filename, num, name, observers, targets):
     f.write(addret(time))
     f.write(addret(purpose(purp)))
     f.write(addret(processinglvl(proc)))
-    f.write(addret())
+    if facbool == 3:
+        a = 1
+    else: 
+        a = 0
+    f.write(addret(generate_facet(wavelength,disc, a, facoptions )))#facet
     f.write(addret(typegen(1, type1)))
     lid = lid.split(" ")
     f.write(addret(lidgen(lid[0], lid[1])))
