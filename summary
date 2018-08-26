@@ -1,0 +1,9 @@
+My goal was to write a program that would allow people developing a database solution for PDS4 to test and validate thier work on a large scale. In order to do that, it required xml metadata to go along with actual data. I wrote a progam that partially helped to accomplish this goal. It took various amounts of input to create an assortment of sample context-areas, which are a portion of the full pds4 label that goes on data
+
+Written mostly in python 3, The program, context-builder, builds context-areas for pds4 labels. 
+running python inputgenerator.py will return a prompt asking for information to build the xml
+it does this by default randomly picking from lists of possible data values, such as type and observation reference, or by prompting the user for names and other information
+it then builds input files, (generated-input) for inputprocessor.py which is run automatically by inputgenerator.py, and it uses regex to read and parse the input files given. from that it will create a recursive data structure that then is recursivly parsed to create xml etree python objects which are written to output files. 
+
+there are some restrictions that are put in, for example, the facet types, when they are generated, will depend on the discipline selected beforehand, but more complex relations, such as the ones that relate, for example, primary investigation and observation systems, will not have any sort of defined relationship, programmatically. The generated tags and text is mostly randomly selected, unless the user inputs all of the text.
+
