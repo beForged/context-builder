@@ -135,6 +135,8 @@ def target(name, num, t):
 #just a small function that will make filenames, and also make the loop that will generate files
 def defaultgeneration(num, default, name, obs, targ): #number of files you want to generate
     arr = []
+    if default == 3:
+        spec = specific(filename, x, name, obs, targ)
     for x in range(0, num):
         filename = "generated-input" + str(x + 1)
         arr.append(filename)
@@ -143,7 +145,7 @@ def defaultgeneration(num, default, name, obs, targ): #number of files you want 
         elif default == 2:
             commandline(filename, x, name, obs, targ) 
         elif default == 3:
-            specific(filename, x, name, obs, targ)
+            specificwrite(filename, x, name, obs, targ, spec[0],spec[1],spec[2],spec[3],spec[4],spec[5],spec[6],spec[7],spec[8],spec[9],spec[10],spec[11],spec[12],spec[13],spec[14])
     testinput(arr)
 
 
@@ -185,7 +187,9 @@ def specific(filename, num, name, observers, targets):
         string = "input target " + str(each) + " name\n"
         targname.append(input(string))
         targtypes.append(int(input("input what types the target is\n1.Asteroid\n2.Comet\n3.Dust\n4.Dwarf Planet\n5.Meteorite\n6.Meteroid\n7.Satellite\n")) - 1)###
+        return (time, purp, proc, facbool, wavelength, disc, a, facoptions, type1, lid, ref1, obsname, obsref, targname, targtypes)
 
+def specificwrite(filename, x, name, obs, targ, time, purp, proc, facbool, wavelength, disc, a, facoptions, type1, lid, ref1, obsname, obstype, obsref, targname, targtypes):
     f = open(filename, "w+")
     f.write(addret(time))
     f.write(addret(purpose(purp)))
