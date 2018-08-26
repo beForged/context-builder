@@ -30,9 +30,14 @@ def generate_facet(wave, disc, facet1, option):
     imaging = ["Greyscale", "Color", "Movie", "Color Movie"]
     fields = ["Electric", "Magnetic"]
     section = ["Lightcurve", "Meteorics", "Physical Properties", "Taxonomy", "Historical Reference"]
-
+    if wave == None:
+        return ""
+    
+    facet = "science_facets wavelength_range " + wavelength[wave] 
+    if disc == None:
+        return facet
     disc = disc_name[disc]
-    facet = "science_facets wavelength_range " + wavelength[wave] + ", discipline_name " + disc
+    facet = facet + ", discipline_name " + disc
     if facet1 == 1:
         facet = facet + ", facet1 "  
         if disc == 'Imaging':
@@ -116,12 +121,18 @@ def addret(string):
 
 #generates a observing system component string
 def obs(name, num, t, ref):
-    string = "Observing_System_Components name " + name + str(num) + typegen(2, t) + " " + lidgen("context", "observing") +  reftype(2, ref) 
+    if num is None:
+        string = "Observing_System_Components name " + name + typegen(2, t) + " " + lidgen("context", "observing") +  reftype(2, ref) 
+    else:
+        string = "Observing_System_Components name " + name + str(num) + typegen(2, t) + " " + lidgen("context", "observing") +  reftype(2, ref) 
     return string
 
 #generates a target identification string
 def target(name, num, t):
-    string = "Target_Identification name " + name + str(num) + typegen(3, t)
+    if num is None:
+        string = "Target_Identification name " + name + typegen(3, t)
+    else:
+        string = "Target_Identification name " + name + str(num) + typegen(3, t)
     return string
 
 
@@ -133,9 +144,73 @@ def defaultgeneration(num, default, name, obs, targ): #number of files you want 
         arr.append(filename)
         if default == 1:
             filewriter(filename, x)
-        else:
+        elif default == 2:
             commandline(filename, x, name, obs, targ) 
+        elif default == 3:
+            specific(filename, x, name, obs, targ)
     testinput(arr)
+
+
+    #this is done incorectly, as it will prompt for everysingle iteration, instead of prompting once. 
+    #only the top section (prompts) needs to be moved, the stuff after file.open are ok.
+def specific(filename, num, name, observers, targets):
+    time = timegen()
+    purp= int(input("input purpose \n 1.Navigation \n2.Science\n3.Calibration\n")) - 1
+    proc = int(input("input a processing level\n1.Calibrated\n2.Derived\n3.Partially Processed\n4.Raw\n5.Telemetry\n")) - 1
+    facbool = int(input("input number of facets, 0-3\n"))
+    wavelength = None
+    facoptions = None
+    disc = None
+    while(facbool > 0):
+        wavelength = int(input("input wavelength\n1.Infrared\n2.Microwave\n3.Millimeter\n4.Near Infrared\n5.Radio\n6.Submillimeter\n")) - 1
+        if facbool == 1:
+            break
+        disc = int(input ("input discipline name\n1.Imaging\n2.Fields\n3.Small Bodies\n")) - 1
+        if facbool == 2:
+            break
+        if disc == 0:
+            facoptions = int(input("input facet numbers\n1.Greyscale\n2.Color\n3.Movie\n4.Color Movie\n")) - 1
+        if disc == 1:
+            facoptions = int(input("input facet numbers\n1.Electric\n2.Magnetic\n")) - 1
+        if disc == 2:
+            facoptions = int(input("input facet numbers\n1.Lightcurve\n2.Meteorics\n3.Physical Properties\n4.Taxonomy\n5.Historical Reference\n")) - 1
+        break
+    type1 = int(input("input a type from the list\n1.Individual Investigation\n2.Mission\n3.Observing Campaign\n4.Other Investigations\n")) - 1
+    lid = input("enter 2 space separated words for the lid reference\n")
+    ref1 = int(input("input a number for reference type\n1.bundle_to_investigation\n2.collection_to_investigation\n3.document_to_investigation\n4.data_to_investigation\n")) - 1
+    obstype = []
+    obsref = []
+    obsname = []
+    for each in range(0,observers):
+        obsname.append(input("input a name"))
+        obstype.append(int(input("input a number for type\n1.Airborne\n2.Aircraft\n3.Balloon\n4.Facility\n5.Instrument\n6.Laboratory\n7.Observatory\n8.Spacecraft\n9.Telescope\n")) - 1)
+        obsref.append(int(input("input a number for reference\n1.is_airborne\n2.is_facility\n3.is_instrument\n4.is_instrument_host\n5.is_other\n6.is_telescope\n")) - 1)##
+    targnames = []
+    targtypes = []
+    for each in range(0,targets):
+        targname.append(input("input target " + str(each) + " name"))
+        targtypes.append(int(input("input what types the target is\n1.Asteroid\n2.Comet\n3.Dust\n4.Dwarf Planet\n5.Meteorite\n6.Meteroid\n7.Satellite\n")) - 1)###
+
+    f = open(filename, "w+")
+    f.write(addret(time))
+    f.write(addret(purpose(purp)))
+    f.write(addret(processinglvl(proc)))
+    if facbool == 3:
+        a = 1
+    else: 
+        a = 0
+    f.write(addret(generate_facet(wavelength,disc, a, facoptions )))#facet
+    f.write(addret(typegen(1, type1)))
+    lid = lid.split(" ")
+    f.write(addret(lidgen(lid[0], lid[1])))
+    f.write(addret(reftype(1, ref1)))
+    for x in range(0,observers):
+        f.write(addret(obs(obsname[x],None, obstype[x], obsref[x])))
+    for x in range(0, targets):
+        f.write(addret(target(targname[x], None, targtypes[x])))
+    f.close()
+
+
 
 #takes in a name, and some numbers to make a more specific input file
 #random generation of numbers here to just randomly make appropriate strings,
@@ -165,7 +240,11 @@ def cmdline(num):
     name = input("set a sample name: ")
     observers = int(input("set a number of observers: "))
     targets = int(input("set a number of targets: "))
-    defaultgeneration(num,2, name, observers, targets)
+    spec= input("would you like to enter all information manually y/n")
+    if spec== "y":
+        defaultgeneration(num, 3, name, observers, targets)
+    else:
+        defaultgeneration(num,2, name, observers, targets)
 
 #default input files.
 #this makes a random input file to be turned into a  xml fragment 

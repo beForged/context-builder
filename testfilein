@@ -1,0 +1,11 @@
+time 2014-05-13T21:04:04Z 2014-05-14T02:52:20Z
+purpose Calibration
+processing_level Partially Processed
+science_facets wavelength_range Millimeter, discipline_name Small Bodies, facet1 Lightcurve
+name spaceship0
+type Mission
+lid_reference urn:nasa:pds:sbn:sample0:sample
+reference_type data_to_investigation
+Observing_System_Components name sample_obs_name0 type Airborne lid_reference urn:nasa:pds:context:observing:sample reference_type is_instrument
+Target_Identification name sample_target_name1 type Asteroid Comet
+Target_Identification name sample_target_name2 type Dwarf Planet

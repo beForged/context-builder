@@ -1,0 +1,39 @@
+<Context_area>
+   <Time_Coordinates>
+      <start_date_time>2014-05-13T21:04:04Z</start_date_time>
+      <stop_date_time>2014-05-14T02:52:20Z</stop_date_time>
+   </Time_Coordinates>
+   <Primary_Results_Summary>
+      <Purpose>Calibration</Purpose>
+      <Processing_level>Partially Processed</Processing_level>
+      <wavelength_range>Millimeter</wavelength_range>
+      <discipline_name>Small Bodies</discipline_name>
+      <facet1>Lightcurve</facet1>
+   </Primary_Results_Summary>
+   <Investigation_Area>
+      <name>spaceship0</name>
+      <Type>Mission</Type>
+      <Internal_Reference>
+         <Lid_Reference>urn:nasa:pds:sbn:sample0:sample</Lid_Reference>
+         <Reference_Types>data_to_investigation</Reference_Types>
+      </Internal_Reference>
+   </Investigation_Area>
+   <Observing_System>
+      <Observing_System_Components>
+         <Name>sample_obs_name0</Name>
+         <Type>Airborne</Type>
+         <Internal_Reference>
+            <Lid_Reference>urn:nasa:pds:context:observing:sample</Lid_Reference>
+            <Reference_Type>is_instrument</Reference_Type>
+         </Internal_Reference>
+      </Observing_System_Components>
+   </Observing_System>
+   <Target_Identification>
+      <Name>sample_target_name1</Name>
+      <Type>Asteroid Comet</Type>
+   </Target_Identification>
+   <Target_Identification>
+      <Name>sample_target_name2</Name>
+      <Type>Dwarf Planet</Type>
+   </Target_Identification>
+</Context_area>
