@@ -151,6 +151,8 @@ def defaultgeneration(num, default, name, obs, targ): #number of files you want 
     testinput(arr)
 
 
+    #this is done incorectly, as it will prompt for everysingle iteration, instead of prompting once. 
+    #only the top section (prompts) needs to be moved, the stuff after file.open are ok.
 def specific(filename, num, name, observers, targets):
     time = timegen()
     purp= int(input("input purpose \n 1.Navigation \n2.Science\n3.Calibration\n")) - 1
